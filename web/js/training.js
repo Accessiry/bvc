@@ -66,8 +66,82 @@ class TrainingController {
     }
 
     connectWebSocket() {
+        // Check if Socket.IO is available, otherwise fall back to WebSocket
+        if (typeof io !== 'undefined') {
+            this.connectSocketIO();
+        } else {
+            this.connectWebSocketDirect();
+        }
+    }
+
+    connectSocketIO() {
+        this.updateConnectionStatus('connecting');
+        this.addLog('正在连接Socket.IO服务器...', 'info');
+        
+        try {
+            // Connect using Socket.IO client with standard path
+            this.wsConnection = io({
+                transports: ['websocket', 'polling']
+            });
+            
+            this.wsConnection.on('connect', () => {
+                this.updateConnectionStatus('connected');
+                this.addLog('Socket.IO连接已建立', 'success');
+                this.clearConnectionRetries();
+            });
+            
+            this.wsConnection.on('training_progress', (data) => {
+                this.updateTrainingProgress(data);
+            });
+            
+            this.wsConnection.on('training_metrics', (data) => {
+                this.updateMetrics(data);
+            });
+            
+            this.wsConnection.on('training_log', (data) => {
+                this.addLog(data.message, data.level);
+            });
+            
+            this.wsConnection.on('training_status', (data) => {
+                this.updateTrainingStatus(data.status);
+            });
+            
+            this.wsConnection.on('training_complete', (data) => {
+                this.onTrainingComplete(data);
+            });
+            
+            this.wsConnection.on('training_error', (data) => {
+                this.onTrainingError(data);
+            });
+            
+            this.wsConnection.on('disconnect', (reason) => {
+                this.updateConnectionStatus('disconnected');
+                this.addLog(`Socket.IO连接断开: ${reason}`, 'warning');
+                if (reason === 'io server disconnect') {
+                    // Server initiated disconnect, try to reconnect
+                    this.scheduleReconnect();
+                }
+            });
+            
+            this.wsConnection.on('connect_error', (error) => {
+                this.updateConnectionStatus('disconnected');
+                this.addLog(`Socket.IO连接错误: ${error.message}`, 'error');
+                this.scheduleReconnect();
+            });
+            
+        } catch (error) {
+            this.updateConnectionStatus('disconnected');
+            this.addLog(`无法创建Socket.IO连接: ${error.message}，尝试WebSocket`, 'warning');
+            this.connectWebSocketDirect();
+        }
+    }
+
+    connectWebSocketDirect() {
         const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
         const wsUrl = `${protocol}//${window.location.host}/ws/training`;
+        
+        this.updateConnectionStatus('connecting');
+        this.addLog('正在连接WebSocket服务器...', 'info');
         
         try {
             this.wsConnection = new WebSocket(wsUrl);
@@ -75,28 +149,72 @@ class TrainingController {
             this.wsConnection.onopen = () => {
                 this.updateConnectionStatus('connected');
                 this.addLog('WebSocket连接已建立', 'success');
+                this.clearConnectionRetries();
             };
             
             this.wsConnection.onmessage = (event) => {
-                const data = JSON.parse(event.data);
-                this.handleWebSocketMessage(data);
+                try {
+                    const data = JSON.parse(event.data);
+                    this.handleWebSocketMessage(data);
+                } catch (error) {
+                    this.addLog(`WebSocket消息解析错误: ${error.message}`, 'error');
+                }
             };
             
-            this.wsConnection.onclose = () => {
+            this.wsConnection.onclose = (event) => {
                 this.updateConnectionStatus('disconnected');
-                this.addLog('WebSocket连接已断开，尝试重连...', 'warning');
-                setTimeout(() => this.connectWebSocket(), 5000);
+                if (event.wasClean) {
+                    this.addLog('WebSocket连接正常关闭', 'info');
+                } else {
+                    this.addLog(`WebSocket连接意外断开 (code: ${event.code}, reason: ${event.reason || 'unknown'})`, 'warning');
+                    this.scheduleReconnect();
+                }
             };
             
             this.wsConnection.onerror = (error) => {
                 this.updateConnectionStatus('disconnected');
-                this.addLog('WebSocket连接错误', 'error');
+                this.addLog('WebSocket连接错误，可能是服务器未启动或路径不正确', 'error');
+                this.scheduleReconnect();
             };
         } catch (error) {
             this.updateConnectionStatus('disconnected');
-            this.addLog('无法建立WebSocket连接，使用轮询模式', 'warning');
+            this.addLog(`无法创建WebSocket连接: ${error.message}，使用轮询模式`, 'warning');
             this.setupPolling();
         }
+    }
+
+    clearConnectionRetries() {
+        if (this.reconnectTimeout) {
+            clearTimeout(this.reconnectTimeout);
+            this.reconnectTimeout = null;
+        }
+        this.reconnectAttempts = 0;
+    }
+
+    scheduleReconnect() {
+        // Don't reconnect if we're not training
+        if (!this.isTraining) {
+            this.addLog('未在训练中，跳过WebSocket重连', 'info');
+            return;
+        }
+
+        // Clear any existing reconnect timeout
+        this.clearConnectionRetries();
+        
+        // Exponential backoff with max 30 seconds
+        this.reconnectAttempts = (this.reconnectAttempts || 0) + 1;
+        const delay = Math.min(1000 * Math.pow(2, this.reconnectAttempts - 1), 30000);
+        
+        this.addLog(`${delay / 1000}秒后尝试重新连接WebSocket (第${this.reconnectAttempts}次尝试)`, 'info');
+        
+        this.reconnectTimeout = setTimeout(() => {
+            if (this.reconnectAttempts <= 5) {  // Max 5 attempts
+                this.connectWebSocket();
+            } else {
+                this.addLog('WebSocket重连失败，切换到轮询模式', 'warning');
+                this.setupPolling();
+            }
+        }, delay);
     }
 
     updateConnectionStatus(status) {
@@ -120,9 +238,43 @@ class TrainingController {
     }
 
     handleWebSocketMessage(data) {
-        const { type, payload } = data;
+        // Handle different message formats
+        // Server can send messages in different formats:
+        // 1. Direct event data: { type: 'event_name', payload: {...} }
+        // 2. Socket.IO format: just the payload directly
         
-        switch (type) {
+        let messageType, payload;
+        
+        if (data.type && data.payload) {
+            // Format 1: { type: 'event_name', payload: {...} }
+            messageType = data.type;
+            payload = data.payload;
+        } else if (typeof data === 'object') {
+            // Format 2: Direct payload, try to infer type from content
+            payload = data;
+            
+            if (data.task_id && data.epoch !== undefined) {
+                messageType = 'training_progress';
+            } else if (data.task_id && data.train_loss !== undefined) {
+                messageType = 'training_metrics';
+            } else if (data.task_id && data.level && data.message) {
+                messageType = 'training_log';
+            } else if (data.status) {
+                messageType = 'training_status';
+            } else if (data.task_id && data.final_metrics) {
+                messageType = 'training_complete';
+            } else if (data.task_id && data.error) {
+                messageType = 'training_error';
+            } else {
+                this.addLog(`收到未知格式的WebSocket消息: ${JSON.stringify(data)}`, 'warning');
+                return;
+            }
+        } else {
+            this.addLog(`无法处理WebSocket消息: ${JSON.stringify(data)}`, 'error');
+            return;
+        }
+        
+        switch (messageType) {
             case 'training_progress':
                 this.updateTrainingProgress(payload);
                 break;
@@ -141,6 +293,8 @@ class TrainingController {
             case 'training_error':
                 this.onTrainingError(payload);
                 break;
+            default:
+                this.addLog(`收到未知类型的WebSocket消息: ${messageType}`, 'warning');
         }
     }
 

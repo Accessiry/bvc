@@ -15,6 +15,45 @@ import numpy as np
 from werkzeug.utils import secure_filename
 import mimetypes
 
+# Fix Python 3.12 SQLite datetime adapter deprecation warning
+def register_sqlite_adapters():
+    """Register custom datetime adapters for SQLite to fix Python 3.12 deprecation warnings"""
+    import sqlite3
+    from datetime import datetime, date
+    
+    def adapt_datetime(dt):
+        """Convert datetime to string for SQLite storage"""
+        return dt.isoformat()
+    
+    def adapt_date(d):
+        """Convert date to string for SQLite storage"""
+        return d.isoformat()
+    
+    def convert_datetime(s):
+        """Convert string back to datetime from SQLite"""
+        if isinstance(s, bytes):
+            s = s.decode('utf-8')
+        try:
+            return datetime.fromisoformat(s)
+        except ValueError:
+            # Fallback for older format
+            return datetime.strptime(s, '%Y-%m-%d %H:%M:%S.%f')
+    
+    def convert_date(s):
+        """Convert string back to date from SQLite"""
+        if isinstance(s, bytes):
+            s = s.decode('utf-8')
+        return date.fromisoformat(s)
+    
+    # Register the adapters and converters
+    sqlite3.register_adapter(datetime, adapt_datetime)
+    sqlite3.register_adapter(date, adapt_date)
+    sqlite3.register_converter('TIMESTAMP', convert_datetime)
+    sqlite3.register_converter('DATE', convert_date)
+
+# Register SQLite adapters before any database operations
+register_sqlite_adapters()
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'bvc-vuln-detection-system'
 app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(__file__), '../assets/datasets')
@@ -49,7 +88,7 @@ os.makedirs(app.config['MODEL_FOLDER'], exist_ok=True)
 # Database initialization
 def init_db():
     """Initialize the SQLite database for training history and dataset metadata"""
-    conn = sqlite3.connect('bvc_system.db')
+    conn = sqlite3.connect('bvc_system.db', detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
     cursor = conn.cursor()
     
     # Training tasks table
@@ -118,8 +157,8 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 def get_db_connection():
-    """Get a database connection"""
-    conn = sqlite3.connect('bvc_system.db')
+    """Get a database connection with proper datetime handling"""
+    conn = sqlite3.connect('bvc_system.db', detect_types=sqlite3.PARSE_DECLTYPES | sqlite3.PARSE_COLNAMES)
     conn.row_factory = sqlite3.Row
     return conn
 
@@ -243,6 +282,11 @@ def mock_training_process(task_id, config):
             'task_id': task_id,
             'error': str(e)
         })
+
+@app.route('/ws/training')
+def websocket_training():
+    """Handle WebSocket training endpoint - redirect to Socket.IO"""
+    return "WebSocket endpoint available. Use Socket.IO client to connect.", 200
 
 # Static File Serving Routes
 
@@ -679,7 +723,7 @@ if __name__ == '__main__':
     init_db()
     print("BVC Vulnerability Detection System API Server")
     print("Server starting on http://localhost:5000")
-    print("WebSocket available at ws://localhost:5000")
+    print("WebSocket available at ws://localhost:5000/socket.io/")
     
     # Add some mock datasets if database is empty
     conn = get_db_connection()
