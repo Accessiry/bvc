@@ -21,7 +21,24 @@ app.config['MODEL_FOLDER'] = os.path.join(os.path.dirname(__file__), '../assets/
 app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024  # 500MB max file size
 
 CORS(app, origins="*")
-socketio = SocketIO(app, cors_allowed_origins="*")
+
+# Configure SocketIO with appropriate async mode for Python 3.12 compatibility
+# Note: eventlet is not compatible with Python 3.12 due to removed ssl.wrap_socket
+try:
+    # Try threading mode first (most compatible)
+    socketio = SocketIO(app, cors_allowed_origins="*", async_mode='threading')
+    print("SocketIO configured with threading async mode")
+except Exception as e:
+    print(f"Warning: Could not configure SocketIO with threading mode: {e}")
+    try:
+        # Fallback to gevent if available
+        socketio = SocketIO(app, cors_allowed_origins="*", async_mode='gevent')
+        print("SocketIO configured with gevent async mode")
+    except Exception as e2:
+        print(f"Warning: Could not configure SocketIO with gevent mode: {e2}")
+        # Final fallback - let SocketIO choose automatically (excluding eventlet)
+        socketio = SocketIO(app, cors_allowed_origins="*")
+        print("SocketIO configured with automatic async mode selection")
 
 # Ensure upload directories exist
 os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
