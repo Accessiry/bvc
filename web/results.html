@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实验结果 - BVC Research Platform</title>
+    <link rel="stylesheet" href="css/academic.css">
+    <link rel="stylesheet" href="css/charts.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <h1>BVC Research Platform</h1>
+                    <p>Binary Vulnerability Detection System</p>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html">项目概述</a></li>
+                    <li><a href="results.html" class="active">实验结果</a></li>
+                    <li><a href="analysis.html">数据分析</a></li>
+                    <li><a href="docs.html">使用说明</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <section class="hero-section">
+            <div class="container">
+                <h1>实验结果分析</h1>
+                <h2>Experimental Results Analysis</h2>
+                <p class="hero-description">
+                    多种深度学习模型在不同程序和架构下的漏洞检测性能对比分析
+                </p>
+            </div>
+        </section>
+
+        <!-- Model Performance Overview -->
+        <section class="performance-overview">
+            <div class="container">
+                <h2>模型性能总览</h2>
+                
+                <!-- Performance Metrics Cards -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-value" id="avg-auc">0.953</div>
+                        <div class="metric-label">平均 AUC</div>
+                        <div class="metric-change positive">+2.3% vs baseline</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="avg-precision">0.924</div>
+                        <div class="metric-label">平均精确率</div>
+                        <div class="metric-change positive">+1.8% vs baseline</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="avg-recall">0.917</div>
+                        <div class="metric-label">平均召回率</div>
+                        <div class="metric-change positive">+3.1% vs baseline</div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-value" id="avg-f1">0.920</div>
+                        <div class="metric-label">平均 F1-Score</div>
+                        <div class="metric-change positive">+2.5% vs baseline</div>
+                    </div>
+                </div>
+
+                <!-- Chart Controls -->
+                <div class="chart-controls">
+                    <div class="control-group">
+                        <label for="program-select">选择程序:</label>
+                        <select id="program-select">
+                            <option value="all">全部程序</option>
+                            <option value="coreutils">Coreutils</option>
+                            <option value="busybox">Busybox</option>
+                            <option value="openssl">OpenSSL</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="arch-select">选择架构:</label>
+                        <select id="arch-select">
+                            <option value="all">全部架构</option>
+                            <option value="arm">ARM</option>
+                            <option value="mips">MIPS</option>
+                            <option value="x86">x86</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label for="opt-select">优化级别:</label>
+                        <select id="opt-select">
+                            <option value="all">全部级别</option>
+                            <option value="O0">O0</option>
+                            <option value="O1">O1</option>
+                            <option value="O2">O2</option>
+                            <option value="O3">O3</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Model Comparison Charts -->
+        <section class="model-comparison">
+            <div class="container">
+                <h2>模型性能对比</h2>
+                
+                <div class="charts-grid two-column">
+                    <!-- AUC Comparison -->
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3>AUC 性能对比</h3>
+                            <p>各模型在不同测试集上的AUC值对比</p>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="auc-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Precision-Recall-F1 Comparison -->
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3>精确率-召回率-F1对比</h3>
+                            <p>模型在精确率、召回率和F1-Score的综合表现</p>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="prf-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROC Curves -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>ROC 曲线对比</h3>
+                        <p>受试者工作特征曲线 - 真正率 vs 假正率</p>
+                    </div>
+                    <div class="chart-wrapper large">
+                        <canvas id="roc-chart"></canvas>
+                    </div>
+                    <div class="chart-legend">
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #2E4BC6;"></div>
+                            <span>BERT (AUC: 0.982)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #FF6B35;"></div>
+                            <span>VulSeeker (AUC: 0.968)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #28a745;"></div>
+                            <span>SAFE (AUC: 0.954)</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-color" style="background-color: #6f42c1;"></div>
+                            <span>SENSE (AUC: 0.941)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Performance Analysis -->
+        <section class="detailed-analysis">
+            <div class="container">
+                <h2>详细性能分析</h2>
+                
+                <!-- Performance by Program -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>不同程序的检测性能</h3>
+                        <p>各模型在不同目标程序上的AUC表现</p>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="program-performance-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Performance by Architecture -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>不同架构的检测性能</h3>
+                        <p>各模型在不同处理器架构上的适应性分析</p>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="arch-performance-chart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Training Progress -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>训练收敛分析</h3>
+                        <p>模型训练过程中的损失函数和准确率变化</p>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="training-progress-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Performance Table -->
+        <section class="performance-table">
+            <div class="container">
+                <h2>详细性能数据</h2>
+                
+                <div class="export-controls">
+                    <button class="export-btn" onclick="exportToCSV()">导出 CSV</button>
+                    <button class="export-btn secondary" onclick="exportToPDF()">导出 PDF</button>
+                </div>
+                
+                <table class="data-table" id="performance-table">
+                    <thead>
+                        <tr>
+                            <th>模型</th>
+                            <th>程序</th>
+                            <th>架构</th>
+                            <th>优化</th>
+                            <th class="number">AUC</th>
+                            <th class="number">精确率</th>
+                            <th class="number">召回率</th>
+                            <th class="number">F1-Score</th>
+                            <th class="number">准确率</th>
+                        </tr>
+                    </thead>
+                    <tbody id="performance-table-body">
+                        <!-- Data will be populated by JavaScript -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2024 Binary Vulnerability Detection Research Platform. All rights reserved.</p>
+            <p>Contact: research@bvc-platform.org</p>
+        </div>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

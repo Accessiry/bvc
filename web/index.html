@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>漏洞检测系统研究平台 - Binary Vulnerability Detection Research Platform</title>
+    <link rel="stylesheet" href="css/academic.css">
+    <link rel="stylesheet" href="css/charts.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <h1>BVC Research Platform</h1>
+                    <p>Binary Vulnerability Detection System</p>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="active">项目概述</a></li>
+                    <li><a href="results.html">实验结果</a></li>
+                    <li><a href="analysis.html">数据分析</a></li>
+                    <li><a href="docs.html">使用说明</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <section class="hero-section">
+            <div class="container">
+                <h1>漏洞检测系统可视化研究平台</h1>
+                <h2>Binary Vulnerability Detection Research Platform</h2>
+                <p class="hero-description">
+                    基于深度学习的二进制代码漏洞检测技术研究平台，提供多种模型性能对比与实验结果可视化分析。
+                </p>
+            </div>
+        </section>
+
+        <section class="overview-section">
+            <div class="container">
+                <div class="content-grid">
+                    <div class="overview-card">
+                        <h3>研究背景</h3>
+                        <p>
+                            二进制代码漏洞检测是网络安全领域的重要研究方向。本系统集成了多种深度学习模型，
+                            包括VulSeeker、SAFE、SENSE和FIT等先进算法，用于检测二进制程序中的潜在漏洞。
+                        </p>
+                    </div>
+
+                    <div class="overview-card">
+                        <h3>研究目标</h3>
+                        <p>
+                            通过对比分析不同模型在多种程序和架构上的性能表现，为二进制漏洞检测技术的发展
+                            提供实验数据支撑和研究参考。
+                        </p>
+                    </div>
+
+                    <div class="overview-card">
+                        <h3>技术特点</h3>
+                        <p>
+                            结合控制流图(CFG)、数据流图(DFG)和基本块特征，采用图神经网络和深度学习技术，
+                            实现高精度的二进制代码漏洞检测。
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="models-section">
+            <div class="container">
+                <h2>支持的检测模型</h2>
+                <div class="models-grid">
+                    <div class="model-card">
+                        <h3>BERT</h3>
+                        <p>基于BERT预训练模型的二进制代码表示学习方法</p>
+                        <div class="model-stats">
+                            <span class="stat">平均AUC: 0.96+</span>
+                        </div>
+                    </div>
+
+                    <div class="model-card">
+                        <h3>VulSeeker</h3>
+                        <p>专门针对漏洞检测设计的图神经网络模型</p>
+                        <div class="model-stats">
+                            <span class="stat">平均AUC: 0.94+</span>
+                        </div>
+                    </div>
+
+                    <div class="model-card">
+                        <h3>SAFE</h3>
+                        <p>基于自注意力机制的二进制代码分析模型</p>
+                        <div class="model-stats">
+                            <span class="stat">平均AUC: 0.93+</span>
+                        </div>
+                    </div>
+
+                    <div class="model-card">
+                        <h3>SENSE</h3>
+                        <p>结构感知的二进制代码相似性检测模型</p>
+                        <div class="model-stats">
+                            <span class="stat">平均AUC: 0.92+</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="programs-section">
+            <div class="container">
+                <h2>实验环境</h2>
+                <div class="content-grid">
+                    <div class="env-card">
+                        <h3>测试程序</h3>
+                        <ul>
+                            <li><strong>Coreutils 6.12</strong> - GNU核心工具包</li>
+                            <li><strong>Busybox 1.27.2</strong> - 嵌入式系统工具集</li>
+                            <li><strong>OpenSSL 1.0.1f/1.0.1u</strong> - 加密库</li>
+                        </ul>
+                    </div>
+
+                    <div class="env-card">
+                        <h3>编译架构</h3>
+                        <ul>
+                            <li><strong>ARM</strong> - 移动设备架构</li>
+                            <li><strong>MIPS</strong> - 嵌入式处理器架构</li>
+                            <li><strong>x86</strong> - 传统PC架构</li>
+                        </ul>
+                    </div>
+
+                    <div class="env-card">
+                        <h3>优化级别</h3>
+                        <ul>
+                            <li><strong>O0</strong> - 无优化</li>
+                            <li><strong>O1/O2/O3</strong> - 不同级别优化</li>
+                            <li><strong>组合优化</strong> - 多级别混合</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="quick-start">
+            <div class="container">
+                <h2>快速开始</h2>
+                <div class="start-grid">
+                    <a href="results.html" class="start-card">
+                        <h3>查看实验结果</h3>
+                        <p>浏览各模型的性能对比图表和ROC曲线分析</p>
+                    </a>
+
+                    <a href="analysis.html" class="start-card">
+                        <h3>数据分析</h3>
+                        <p>交互式数据筛选和统计分析功能</p>
+                    </a>
+
+                    <a href="docs.html" class="start-card">
+                        <h3>技术文档</h3>
+                        <p>系统使用指南和模型技术说明</p>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2024 Binary Vulnerability Detection Research Platform. All rights reserved.</p>
+            <p>Contact: research@bvc-platform.org</p>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

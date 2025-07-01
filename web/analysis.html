@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据分析 - BVC Research Platform</title>
+    <link rel="stylesheet" href="css/academic.css">
+    <link rel="stylesheet" href="css/charts.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@400;600;700&family=Source+Sans+Pro:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <header class="main-header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="logo">
+                    <h1>BVC Research Platform</h1>
+                    <p>Binary Vulnerability Detection System</p>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="index.html">项目概述</a></li>
+                    <li><a href="results.html">实验结果</a></li>
+                    <li><a href="analysis.html" class="active">数据分析</a></li>
+                    <li><a href="docs.html">使用说明</a></li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main-content">
+        <section class="hero-section">
+            <div class="container">
+                <h1>交互式数据分析</h1>
+                <h2>Interactive Data Analysis</h2>
+                <p class="hero-description">
+                    深入分析漏洞检测模型性能，提供数据筛选、统计分析和导出功能
+                </p>
+            </div>
+        </section>
+
+        <!-- Filter Controls -->
+        <section class="filter-section">
+            <div class="container">
+                <h2>数据筛选</h2>
+                
+                <div class="filter-controls">
+                    <!-- Model Selection -->
+                    <div class="filter-group">
+                        <h3>选择模型</h3>
+                        <div class="filter-buttons">
+                            <button class="filter-btn model-filter-btn active" data-model="bert">BERT</button>
+                            <button class="filter-btn model-filter-btn active" data-model="vulseeker">VulSeeker</button>
+                            <button class="filter-btn model-filter-btn active" data-model="safe">SAFE</button>
+                            <button class="filter-btn model-filter-btn active" data-model="sense">SENSE</button>
+                        </div>
+                    </div>
+
+                    <!-- Metric Selection -->
+                    <div class="filter-group">
+                        <h3>选择指标</h3>
+                        <div class="filter-buttons">
+                            <button class="filter-btn metric-filter-btn active" data-metric="auc">AUC</button>
+                            <button class="filter-btn metric-filter-btn" data-metric="precision">精确率</button>
+                            <button class="filter-btn metric-filter-btn" data-metric="recall">召回率</button>
+                            <button class="filter-btn metric-filter-btn" data-metric="f1">F1-Score</button>
+                            <button class="filter-btn metric-filter-btn" data-metric="accuracy">准确率</button>
+                        </div>
+                    </div>
+
+                    <!-- Program and Architecture Filters -->
+                    <div class="filter-group">
+                        <h3>程序和架构</h3>
+                        <div class="control-row">
+                            <div class="control-group">
+                                <label for="analysis-program-select">程序:</label>
+                                <select id="analysis-program-select">
+                                    <option value="all">全部程序</option>
+                                    <option value="coreutils">Coreutils</option>
+                                    <option value="busybox">Busybox</option>
+                                    <option value="openssl">OpenSSL</option>
+                                </select>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="analysis-arch-select">架构:</label>
+                                <select id="analysis-arch-select">
+                                    <option value="all">全部架构</option>
+                                    <option value="arm">ARM</option>
+                                    <option value="mips">MIPS</option>
+                                    <option value="x86">x86</option>
+                                </select>
+                            </div>
+                            
+                            <div class="control-group">
+                                <label for="analysis-opt-select">优化:</label>
+                                <select id="analysis-opt-select">
+                                    <option value="all">全部级别</option>
+                                    <option value="O0">O0</option>
+                                    <option value="O1">O1</option>
+                                    <option value="O2">O2</option>
+                                    <option value="O3">O3</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Statistics Overview -->
+        <section class="statistics-section">
+            <div class="container">
+                <h2>统计概览</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <h3>数据点总数</h3>
+                        </div>
+                        <div class="stat-value" id="total-data-points">28</div>
+                        <div class="stat-description">不同配置的实验结果</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <h3>最佳性能</h3>
+                        </div>
+                        <div class="stat-value" id="best-performance">0.982</div>
+                        <div class="stat-description">BERT在Coreutils ARM O1上的AUC</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <h3>平均性能</h3>
+                        </div>
+                        <div class="stat-value" id="average-performance">0.953</div>
+                        <div class="stat-description">所有模型和配置的平均AUC</div>
+                    </div>
+
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <h3>性能标准差</h3>
+                        </div>
+                        <div class="stat-value" id="performance-std">0.018</div>
+                        <div class="stat-description">AUC值的标准偏差</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Distribution Analysis -->
+        <section class="distribution-section">
+            <div class="container">
+                <h2>性能分布分析</h2>
+                
+                <div class="charts-grid">
+                    <!-- Performance Distribution -->
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3>性能分布直方图</h3>
+                            <p>所选指标在不同配置下的分布情况</p>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="distribution-chart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Box Plot -->
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3>模型性能箱线图</h3>
+                            <p>各模型性能的统计分布比较</p>
+                        </div>
+                        <div class="chart-wrapper">
+                            <canvas id="boxplot-chart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Correlation Matrix -->
+                <div class="chart-container">
+                    <div class="chart-header">
+                        <h3>指标相关性分析</h3>
+                        <p>不同性能指标之间的相关性热力图</p>
+                    </div>
+                    <div class="chart-wrapper">
+                        <canvas id="correlation-chart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Data Table -->
+        <section class="data-table-section">
+            <div class="container">
+                <h2>详细数据表格</h2>
+                
+                <!-- Table Controls -->
+                <div class="table-controls">
+                    <div class="search-control">
+                        <input type="text" id="data-search" placeholder="搜索数据..." />
+                    </div>
+                    
+                    <div class="sort-control">
+                        <label for="sort-by">排序:</label>
+                        <select id="sort-by">
+                            <option value="auc-desc">AUC (降序)</option>
+                            <option value="auc-asc">AUC (升序)</option>
+                            <option value="precision-desc">精确率 (降序)</option>
+                            <option value="precision-asc">精确率 (升序)</option>
+                            <option value="recall-desc">召回率 (降序)</option>
+                            <option value="recall-asc">召回率 (升序)</option>
+                            <option value="f1-desc">F1-Score (降序)</option>
+                            <option value="f1-asc">F1-Score (升序)</option>
+                        </select>
+                    </div>
+                    
+                    <div class="export-controls">
+                        <button class="export-btn" onclick="exportFilteredData()">导出筛选数据</button>
+                        <button class="export-btn secondary" onclick="exportStatistics()">导出统计报告</button>
+                    </div>
+                </div>
+
+                <!-- Data Table -->
+                <div class="table-wrapper">
+                    <table class="data-table" id="analysis-data-table">
+                        <thead>
+                            <tr>
+                                <th data-sort="model">模型</th>
+                                <th data-sort="program">程序</th>
+                                <th data-sort="architecture">架构</th>
+                                <th data-sort="optimization">优化</th>
+                                <th data-sort="auc" class="number">AUC</th>
+                                <th data-sort="precision" class="number">精确率</th>
+                                <th data-sort="recall" class="number">召回率</th>
+                                <th data-sort="f1" class="number">F1-Score</th>
+                                <th data-sort="accuracy" class="number">准确率</th>
+                                <th class="number">排名</th>
+                            </tr>
+                        </thead>
+                        <tbody id="analysis-table-body">
+                            <!-- Data will be populated by JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination" id="table-pagination">
+                    <!-- Pagination controls will be generated by JavaScript -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison Tool -->
+        <section class="comparison-section">
+            <div class="container">
+                <h2>模型对比工具</h2>
+                
+                <div class="comparison-controls">
+                    <div class="model-selector">
+                        <h3>选择对比模型</h3>
+                        <div class="selector-grid">
+                            <div class="selector-group">
+                                <label for="compare-model-1">模型 1:</label>
+                                <select id="compare-model-1">
+                                    <option value="bert">BERT</option>
+                                    <option value="vulseeker">VulSeeker</option>
+                                    <option value="safe">SAFE</option>
+                                    <option value="sense">SENSE</option>
+                                </select>
+                            </div>
+                            
+                            <div class="selector-group">
+                                <label for="compare-model-2">模型 2:</label>
+                                <select id="compare-model-2">
+                                    <option value="vulseeker">VulSeeker</option>
+                                    <option value="bert">BERT</option>
+                                    <option value="safe">SAFE</option>
+                                    <option value="sense">SENSE</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <button class="export-btn" onclick="generateComparison()">生成对比分析</button>
+                    </div>
+                </div>
+
+                <!-- Comparison Results -->
+                <div id="comparison-results" class="comparison-results">
+                    <!-- Comparison charts and statistics will be populated by JavaScript -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="main-footer">
+        <div class="container">
+            <p>&copy; 2024 Binary Vulnerability Detection Research Platform. All rights reserved.</p>
+            <p>Contact: research@bvc-platform.org</p>
+        </div>
+    </footer>
+
+    <script src="js/data.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/analysis.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
