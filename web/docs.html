@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>使用说明 - BVC 漏洞检测系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/academic.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-academic">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-shield-alt"></i> BVC 漏洞检测系统</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">概述</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="training.html">训练过程</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="datasets.html">数据集管理</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="results.html">实验结果</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="analysis.html">数据分析</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="docs.html">使用说明</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header bg-gradient-primary text-white py-4">
+        <div class="container">
+            <h1><i class="fas fa-book"></i> 使用说明文档</h1>
+            <p class="mb-0">详细的系统使用指南和API文档</p>
+        </div>
+    </section>
+
+    <!-- Documentation Content -->
+    <div class="container mt-4">
+        <div class="row">
+            <!-- Sidebar Navigation -->
+            <div class="col-lg-3">
+                <div class="card shadow-sm position-sticky" style="top: 20px;">
+                    <div class="card-header">
+                        <h6 class="mb-0"><i class="fas fa-list"></i> 文档导航</h6>
+                    </div>
+                    <div class="card-body p-0">
+                        <nav class="docs-nav">
+                            <ul class="nav nav-pills flex-column">
+                                <li class="nav-item">
+                                    <a class="nav-link active" href="#getting-started">快速开始</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#dataset-management">数据集管理</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#model-training">模型训练</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#result-analysis">结果分析</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#api-reference">API参考</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#troubleshooting">故障排除</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#best-practices">最佳实践</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Documentation Content -->
+            <div class="col-lg-9">
+                <!-- Getting Started -->
+                <section id="getting-started" class="mb-5">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h3><i class="fas fa-rocket"></i> 快速开始</h3>
+                        </div>
+                        <div class="card-body">
+                            <h5>系统概述</h5>
+                            <p>BVC漏洞检测系统是一个基于深度学习的二进制代码漏洞检测可视化平台，支持多种先进模型的训练、评估和分析。</p>
+                            
+                            <h5>主要功能</h5>
+                            <ul>
+                                <li><strong>多模型支持</strong>：VulSeeker、SENSE、FIT、SAFE等先进检测模型</li>
+                                <li><strong>实时训练监控</strong>：损失函数、准确率变化的实时可视化</li>
+                                <li><strong>数据集管理</strong>：上传、预处理、分析和管理训练数据</li>
+                                <li><strong>结果分析</strong>：详细的性能指标和可视化报告</li>
+                                <li><strong>学术规范</strong>：实验可重现性和标准化报告</li>
+                            </ul>
+                            
+                            <h5>系统要求</h5>
+                            <div class="alert alert-info">
+                                <h6>最低配置</h6>
+                                <ul class="mb-0">
+                                    <li>操作系统：Linux Ubuntu 18.04+ / Windows 10+ / macOS 10.14+</li>
+                                    <li>内存：8GB RAM（推荐16GB+）</li>
+                                    <li>显卡：NVIDIA GTX 1060+（支持CUDA 10.1+）</li>
+                                    <li>存储：50GB可用空间</li>
+                                    <li>Python 3.7+</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Dataset Management -->
+                <section id="dataset-management" class="mb-5">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h3><i class="fas fa-database"></i> 数据集管理</h3>
+                        </div>
+                        <div class="card-body">
+                            <h5>支持的数据格式</h5>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="format-card p-3 border rounded">
+                                        <h6><i class="fas fa-file-csv"></i> CSV格式</h6>
+                                        <p class="small">标准的逗号分隔值文件，包含特征和标签列</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="format-card p-3 border rounded">
+                                        <h6><i class="fas fa-file-code"></i> JSON格式</h6>
+                                        <p class="small">结构化JSON数据，支持嵌套对象和数组</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="format-card p-3 border rounded">
+                                        <h6><i class="fas fa-file-archive"></i> TFRecord</h6>
+                                        <p class="small">TensorFlow原生格式，高效的二进制存储</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h5 class="mt-4">数据上传流程</h5>
+                            <ol>
+                                <li><strong>准备数据</strong>：确保数据格式正确，包含必要的特征和标签</li>
+                                <li><strong>上传文件</strong>：点击"上传数据集"按钮，选择或拖拽文件</li>
+                                <li><strong>填写信息</strong>：提供数据集名称、版本、架构类型等元信息</li>
+                                <li><strong>数据验证</strong>：系统自动验证数据格式和完整性</li>
+                                <li><strong>预处理配置</strong>：选择数据清洗和特征提取选项</li>
+                            </ol>
+                            
+                            <h5>数据预处理选项</h5>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>选项</th>
+                                            <th>描述</th>
+                                            <th>推荐设置</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>移除重复样本</td>
+                                            <td>删除数据集中的重复记录</td>
+                                            <td>✅ 启用</td>
+                                        </tr>
+                                        <tr>
+                                            <td>处理缺失值</td>
+                                            <td>填充或删除含有缺失值的记录</td>
+                                            <td>✅ 启用</td>
+                                        </tr>
+                                        <tr>
+                                            <td>移除异常值</td>
+                                            <td>检测并移除统计异常值</td>
+                                            <td>⚠️ 根据需求</td>
+                                        </tr>
+                                        <tr>
+                                            <td>数据标准化</td>
+                                            <td>将特征值缩放到标准范围</td>
+                                            <td>✅ 启用</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Model Training -->
+                <section id="model-training" class="mb-5">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h3><i class="fas fa-cogs"></i> 模型训练</h3>
+                        </div>
+                        <div class="card-body">
+                            <h5>模型选择指南</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="model-guide p-3 border rounded mb-3">
+                                        <h6><i class="fas fa-search"></i> VulSeeker</h6>
+                                        <p><strong>适用场景</strong>：已知漏洞的变种检测</p>
+                                        <p><strong>优势</strong>：高精度的相似性检测</p>
+                                        <p><strong>推荐参数</strong>：lr=0.001, batch_size=32</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="model-guide p-3 border rounded mb-3">
+                                        <h6><i class="fas fa-eye"></i> SENSE</h6>
+                                        <p><strong>适用场景</strong>：语义感知的漏洞检测</p>
+                                        <p><strong>优势</strong>：理解代码语义结构</p>
+                                        <p><strong>推荐参数</strong>：lr=0.0001, batch_size=64</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="model-guide p-3 border rounded mb-3">
+                                        <h6><i class="fas fa-cogs"></i> FIT</h6>
+                                        <p><strong>适用场景</strong>：函数级别的漏洞定位</p>
+                                        <p><strong>优势</strong>：精确的函数分析</p>
+                                        <p><strong>推荐参数</strong>：lr=0.002, batch_size=32</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="model-guide p-3 border rounded mb-3">
+                                        <h6><i class="fas fa-shield-alt"></i> SAFE</h6>
+                                        <p><strong>适用场景</strong>：全面的安全特征检测</p>
+                                        <p><strong>优势</strong>：综合多种特征</p>
+                                        <p><strong>推荐参数</strong>：lr=0.0005, batch_size=64</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h5>训练参数说明</h5>
+                            <div class="table-responsive">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th>参数</th>
+                                            <th>范围</th>
+                                            <th>说明</th>
+                                            <th>调优建议</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>学习率 (lr)</td>
+                                            <td>0.0001 - 0.1</td>
+                                            <td>控制模型参数更新的步长</td>
+                                            <td>从0.001开始，根据收敛情况调整</td>
+                                        </tr>
+                                        <tr>
+                                            <td>批次大小</td>
+                                            <td>16 - 128</td>
+                                            <td>每次训练的样本数量</td>
+                                            <td>GPU内存允许的情况下尽量大</td>
+                                        </tr>
+                                        <tr>
+                                            <td>最大迭代</td>
+                                            <td>50 - 1000</td>
+                                            <td>训练的总轮数</td>
+                                            <td>使用早停机制避免过拟合</td>
+                                        </tr>
+                                        <tr>
+                                            <td>嵌入维度</td>
+                                            <td>64 - 512</td>
+                                            <td>特征向量的维度</td>
+                                            <td>平衡模型复杂度和性能</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- API Reference -->
+                <section id="api-reference" class="mb-5">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h3><i class="fas fa-code"></i> API参考</h3>
+                        </div>
+                        <div class="card-body">
+                            <h5>训练API</h5>
+                            <div class="api-endpoint">
+                                <h6><span class="badge bg-success">POST</span> /api/training/start</h6>
+                                <p>启动新的训练任务</p>
+                                <pre><code>{
+  "model": "vulseeker",
+  "dataset": "openssl_1.0.1f_arm_O2",
+  "learning_rate": 0.001,
+  "batch_size": 32,
+  "max_iter": 100,
+  "embedding_size": 128
+}</code></pre>
+                            </div>
+                            
+                            <div class="api-endpoint">
+                                <h6><span class="badge bg-primary">GET</span> /api/training/status/{task_id}</h6>
+                                <p>获取训练任务状态</p>
+                                <pre><code>{
+  "task_id": "task_001",
+  "status": "running",
+  "epoch": 45,
+  "total_epochs": 100,
+  "current_loss": 0.234,
+  "current_accuracy": 0.876
+}</code></pre>
+                            </div>
+                            
+                            <h5>数据集API</h5>
+                            <div class="api-endpoint">
+                                <h6><span class="badge bg-primary">GET</span> /api/datasets</h6>
+                                <p>获取所有数据集列表</p>
+                            </div>
+                            
+                            <div class="api-endpoint">
+                                <h6><span class="badge bg-success">POST</span> /api/datasets/upload</h6>
+                                <p>上传新数据集</p>
+                                <p><strong>Content-Type:</strong> multipart/form-data</p>
+                            </div>
+                            
+                            <h5>WebSocket事件</h5>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>事件类型</th>
+                                            <th>描述</th>
+                                            <th>数据格式</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>training_progress</td>
+                                            <td>训练进度更新</td>
+                                            <td>{ epoch, batch, loss, accuracy }</td>
+                                        </tr>
+                                        <tr>
+                                            <td>training_log</td>
+                                            <td>训练日志消息</td>
+                                            <td>{ message, level, timestamp }</td>
+                                        </tr>
+                                        <tr>
+                                            <td>training_complete</td>
+                                            <td>训练完成通知</td>
+                                            <td>{ task_id, final_metrics }</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Troubleshooting -->
+                <section id="troubleshooting" class="mb-5">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h3><i class="fas fa-wrench"></i> 故障排除</h3>
+                        </div>
+                        <div class="card-body">
+                            <h5>常见问题</h5>
+                            
+                            <div class="faq-item mb-4">
+                                <h6><i class="fas fa-question-circle text-warning"></i> 训练过程中出现内存不足错误</h6>
+                                <div class="alert alert-light">
+                                    <p><strong>解决方案：</strong></p>
+                                    <ul>
+                                        <li>减小批次大小 (batch_size)</li>
+                                        <li>降低模型嵌入维度</li>
+                                        <li>释放其他占用GPU内存的进程</li>
+                                        <li>使用数据并行训练</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item mb-4">
+                                <h6><i class="fas fa-question-circle text-warning"></i> 数据集上传失败</h6>
+                                <div class="alert alert-light">
+                                    <p><strong>可能原因：</strong></p>
+                                    <ul>
+                                        <li>文件格式不支持</li>
+                                        <li>文件大小超过限制（500MB）</li>
+                                        <li>网络连接问题</li>
+                                        <li>服务器存储空间不足</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="faq-item mb-4">
+                                <h6><i class="fas fa-question-circle text-warning"></i> WebSocket连接断开</h6>
+                                <div class="alert alert-light">
+                                    <p><strong>处理方式：</strong></p>
+                                    <ul>
+                                        <li>系统会自动切换到轮询模式</li>
+                                        <li>检查网络连接稳定性</li>
+                                        <li>尝试刷新页面重新连接</li>
+                                        <li>联系系统管理员检查服务状态</li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <h5>性能优化建议</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="optimization-tip p-3 border rounded">
+                                        <h6><i class="fas fa-tachometer-alt"></i> 训练速度优化</h6>
+                                        <ul class="small">
+                                            <li>使用SSD存储数据集</li>
+                                            <li>增加数据加载器的worker数量</li>
+                                            <li>使用混合精度训练</li>
+                                            <li>开启CUDA优化</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="optimization-tip p-3 border rounded">
+                                        <h6><i class="fas fa-memory"></i> 内存优化</h6>
+                                        <ul class="small">
+                                            <li>使用梯度累积减少批次大小</li>
+                                            <li>定期清理GPU缓存</li>
+                                            <li>使用数据流水线</li>
+                                            <li>启用模型检查点</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Best Practices -->
+                <section id="best-practices" class="mb-5">
+                    <div class="card shadow-sm">
+                        <div class="card-header">
+                            <h3><i class="fas fa-star"></i> 最佳实践</h3>
+                        </div>
+                        <div class="card-body">
+                            <h5>实验设计原则</h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="practice-card p-3 border rounded mb-3">
+                                        <h6><i class="fas fa-redo"></i> 可重现性</h6>
+                                        <ul class="small">
+                                            <li>设置固定的随机种子</li>
+                                            <li>记录所有超参数</li>
+                                            <li>保存训练环境信息</li>
+                                            <li>使用版本控制管理代码</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="practice-card p-3 border rounded mb-3">
+                                        <h6><i class="fas fa-chart-line"></i> 性能评估</h6>
+                                        <ul class="small">
+                                            <li>使用多个评估指标</li>
+                                            <li>进行交叉验证</li>
+                                            <li>分析混淆矩阵</li>
+                                            <li>对比基线模型</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <h5>数据管理建议</h5>
+                            <div class="alert alert-info">
+                                <h6><i class="fas fa-lightbulb"></i> 数据组织</h6>
+                                <ul class="mb-0">
+                                    <li><strong>命名规范</strong>：使用一致的数据集命名格式</li>
+                                    <li><strong>版本管理</strong>：为数据集的每次修改创建新版本</li>
+                                    <li><strong>元数据记录</strong>：详细记录数据来源和处理过程</li>
+                                    <li><strong>质量检查</strong>：定期验证数据完整性和一致性</li>
+                                </ul>
+                            </div>
+                            
+                            <h5>模型开发流程</h5>
+                            <ol>
+                                <li><strong>数据探索</strong>：分析数据分布和质量</li>
+                                <li><strong>基线建立</strong>：实现简单的基线模型</li>
+                                <li><strong>特征工程</strong>：提取和选择有效特征</li>
+                                <li><strong>模型选择</strong>：对比不同模型的性能</li>
+                                <li><strong>超参数调优</strong>：系统化的参数搜索</li>
+                                <li><strong>模型集成</strong>：结合多个模型的预测</li>
+                                <li><strong>部署测试</strong>：在真实环境中验证</li>
+                            </ol>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Smooth scrolling for documentation navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.docs-nav .nav-link');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all links
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    
+                    // Add active class to clicked link
+                    this.classList.add('active');
+                    
+                    // Smooth scroll to target section
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            // Update active navigation on scroll
+            window.addEventListener('scroll', function() {
+                const sections = document.querySelectorAll('section[id]');
+                let currentSection = '';
+                
+                sections.forEach(section => {
+                    const rect = section.getBoundingClientRect();
+                    if (rect.top <= 100 && rect.bottom >= 100) {
+                        currentSection = section.id;
+                    }
+                });
+                
+                if (currentSection) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${currentSection}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+
+    <style>
+        .docs-nav .nav-link {
+            color: var(--dark-text);
+            border-radius: 0;
+            border: none;
+            padding: 0.75rem 1rem;
+            transition: all 0.2s ease;
+        }
+        
+        .docs-nav .nav-link:hover {
+            background: var(--light-bg);
+            color: var(--secondary-color);
+        }
+        
+        .docs-nav .nav-link.active {
+            background: var(--secondary-color);
+            color: white;
+        }
+        
+        .api-endpoint {
+            margin-bottom: 2rem;
+            padding: 1rem;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background: var(--light-bg);
+        }
+        
+        .api-endpoint h6 {
+            margin-bottom: 0.5rem;
+        }
+        
+        .api-endpoint pre {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 4px;
+            margin-top: 0.5rem;
+        }
+        
+        .format-card,
+        .model-guide,
+        .practice-card,
+        .optimization-tip {
+            transition: all 0.2s ease;
+        }
+        
+        .format-card:hover,
+        .model-guide:hover,
+        .practice-card:hover,
+        .optimization-tip:hover {
+            box-shadow: var(--shadow);
+            transform: translateY(-2px);
+        }
+        
+        .faq-item h6 {
+            color: var(--dark-text);
+            margin-bottom: 0.5rem;
+        }
+        
+        section {
+            scroll-margin-top: 20px;
+        }
+    </style>
+</body>
+</html>

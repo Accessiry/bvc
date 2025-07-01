@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>实验结果 - BVC 漏洞检测系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/academic.css" rel="stylesheet">
+    <link href="css/charts.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-academic">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-shield-alt"></i> BVC 漏洞检测系统</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">概述</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="training.html">训练过程</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="datasets.html">数据集管理</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="results.html">实验结果</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="analysis.html">数据分析</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="docs.html">使用说明</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header bg-gradient-primary text-white py-4">
+        <div class="container">
+            <h1><i class="fas fa-chart-bar"></i> 实验结果展示</h1>
+            <p class="mb-0">查看和分析模型训练的详细结果</p>
+        </div>
+    </section>
+
+    <!-- Results Content -->
+    <div class="container mt-4">
+        <!-- Model Performance Comparison -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-trophy"></i> 模型性能对比</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="performanceChart" height="400"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Metrics Table -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-table"></i> 详细性能指标</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>模型</th>
+                                        <th>准确率</th>
+                                        <th>精确率</th>
+                                        <th>召回率</th>
+                                        <th>F1-Score</th>
+                                        <th>AUC</th>
+                                        <th>训练时间</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="metricsTable">
+                                    <!-- Metrics will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ROC Curves -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h6 class="mb-0"><i class="fas fa-chart-line"></i> ROC 曲线</h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="rocChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h6 class="mb-0"><i class="fas fa-chart-area"></i> 精确率-召回率曲线</h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="prChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confusion Matrices -->
+        <div class="row mb-4">
+            <div class="col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h6 class="mb-0"><i class="fas fa-th"></i> 混淆矩阵 - VulSeeker</h6>
+                    </div>
+                    <div class="card-body">
+                        <div id="confusionMatrix1"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h6 class="mb-0"><i class="fas fa-th"></i> 混淆矩阵 - SENSE</h6>
+                    </div>
+                    <div class="card-body">
+                        <div id="confusionMatrix2"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dataset Performance Analysis -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-database"></i> 不同数据集上的性能表现</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="datasetPerformanceChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/charts.js"></script>
+    <script>
+        // Sample data for demonstration
+        const resultsData = {
+            models: ['VulSeeker', 'SENSE', 'FIT', 'SAFE'],
+            metrics: {
+                accuracy: [0.873, 0.897, 0.859, 0.912],
+                precision: [0.851, 0.889, 0.834, 0.905],
+                recall: [0.895, 0.905, 0.884, 0.919],
+                f1_score: [0.841, 0.864, 0.827, 0.889],
+                auc: [0.924, 0.943, 0.908, 0.956],
+                training_time: [135, 187, 98, 203] // minutes
+            }
+        };
+
+        // Initialize charts when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            createPerformanceChart();
+            populateMetricsTable();
+            createROCChart();
+            createPRChart();
+            createConfusionMatrices();
+            createDatasetPerformanceChart();
+        });
+
+        function createPerformanceChart() {
+            const ctx = document.getElementById('performanceChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['准确率', '精确率', '召回率', 'F1-Score', 'AUC'],
+                    datasets: resultsData.models.map((model, index) => ({
+                        label: model,
+                        data: [
+                            resultsData.metrics.accuracy[index],
+                            resultsData.metrics.precision[index],
+                            resultsData.metrics.recall[index],
+                            resultsData.metrics.f1_score[index],
+                            resultsData.metrics.auc[index]
+                        ],
+                        borderColor: ['#e74c3c', '#3498db', '#27ae60', '#f39c12'][index],
+                        backgroundColor: ['#e74c3c', '#3498db', '#27ae60', '#f39c12'][index] + '20',
+                        borderWidth: 2,
+                        pointRadius: 4
+                    }))
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            max: 1,
+                            ticks: {
+                                stepSize: 0.2
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function populateMetricsTable() {
+            const tbody = document.getElementById('metricsTable');
+            tbody.innerHTML = '';
+            
+            resultsData.models.forEach((model, index) => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${model}</strong></td>
+                    <td>${(resultsData.metrics.accuracy[index] * 100).toFixed(1)}%</td>
+                    <td>${(resultsData.metrics.precision[index] * 100).toFixed(1)}%</td>
+                    <td>${(resultsData.metrics.recall[index] * 100).toFixed(1)}%</td>
+                    <td>${(resultsData.metrics.f1_score[index] * 100).toFixed(1)}%</td>
+                    <td>${resultsData.metrics.auc[index].toFixed(3)}</td>
+                    <td>${resultsData.metrics.training_time[index]} 分钟</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function createROCChart() {
+            const ctx = document.getElementById('rocChart').getContext('2d');
+            
+            // Generate mock ROC curve data
+            const rocData = resultsData.models.map((model, index) => {
+                const points = [];
+                for (let i = 0; i <= 100; i += 5) {
+                    const fpr = i / 100;
+                    const tpr = Math.min(1, fpr + resultsData.metrics.auc[index] - 0.5 + Math.random() * 0.1);
+                    points.push({ x: fpr, y: Math.max(0, tpr) });
+                }
+                return points;
+            });
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: [
+                        ...resultsData.models.map((model, index) => ({
+                            label: model,
+                            data: rocData[index],
+                            borderColor: ['#e74c3c', '#3498db', '#27ae60', '#f39c12'][index],
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            pointRadius: 0,
+                            fill: false
+                        })),
+                        {
+                            label: '随机分类器',
+                            data: [{ x: 0, y: 0 }, { x: 1, y: 1 }],
+                            borderColor: '#95a5a6',
+                            borderDash: [5, 5],
+                            borderWidth: 1,
+                            pointRadius: 0,
+                            fill: false
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: '假阳性率 (FPR)'
+                            },
+                            min: 0,
+                            max: 1
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: '真阳性率 (TPR)'
+                            },
+                            min: 0,
+                            max: 1
+                        }
+                    }
+                }
+            });
+        }
+
+        function createPRChart() {
+            const ctx = document.getElementById('prChart').getContext('2d');
+            
+            // Generate mock PR curve data
+            const prData = resultsData.models.map((model, index) => {
+                const points = [];
+                for (let i = 0; i <= 100; i += 5) {
+                    const recall = i / 100;
+                    const precision = Math.max(0.1, resultsData.metrics.precision[index] - recall * 0.3 + Math.random() * 0.1);
+                    points.push({ x: recall, y: Math.min(1, precision) });
+                }
+                return points;
+            });
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    datasets: resultsData.models.map((model, index) => ({
+                        label: model,
+                        data: prData[index],
+                        borderColor: ['#e74c3c', '#3498db', '#27ae60', '#f39c12'][index],
+                        backgroundColor: 'transparent',
+                        borderWidth: 2,
+                        pointRadius: 0,
+                        fill: false
+                    }))
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: '召回率 (Recall)'
+                            },
+                            min: 0,
+                            max: 1
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: '精确率 (Precision)'
+                            },
+                            min: 0,
+                            max: 1
+                        }
+                    }
+                }
+            });
+        }
+
+        function createConfusionMatrices() {
+            // Simple confusion matrix visualization
+            const matrix1 = [[850, 150], [120, 880]];
+            const matrix2 = [[870, 130], [95, 905]];
+            
+            createConfusionMatrix('confusionMatrix1', matrix1, 'VulSeeker');
+            createConfusionMatrix('confusionMatrix2', matrix2, 'SENSE');
+        }
+
+        function createConfusionMatrix(containerId, matrix, modelName) {
+            const container = document.getElementById(containerId);
+            
+            const total = matrix[0][0] + matrix[0][1] + matrix[1][0] + matrix[1][1];
+            
+            container.innerHTML = `
+                <div class="confusion-matrix">
+                    <table class="table table-bordered text-center">
+                        <thead>
+                            <tr>
+                                <th rowspan="2">实际</th>
+                                <th colspan="2">预测</th>
+                            </tr>
+                            <tr>
+                                <th>正类</th>
+                                <th>负类</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th>正类</th>
+                                <td class="bg-success text-white"><strong>${matrix[0][0]}</strong><br><small>${((matrix[0][0]/total)*100).toFixed(1)}%</small></td>
+                                <td class="bg-danger text-white"><strong>${matrix[0][1]}</strong><br><small>${((matrix[0][1]/total)*100).toFixed(1)}%</small></td>
+                            </tr>
+                            <tr>
+                                <th>负类</th>
+                                <td class="bg-warning text-dark"><strong>${matrix[1][0]}</strong><br><small>${((matrix[1][0]/total)*100).toFixed(1)}%</small></td>
+                                <td class="bg-success text-white"><strong>${matrix[1][1]}</strong><br><small>${((matrix[1][1]/total)*100).toFixed(1)}%</small></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            `;
+        }
+
+        function createDatasetPerformanceChart() {
+            const ctx = document.getElementById('datasetPerformanceChart').getContext('2d');
+            
+            const datasets = ['openssl_1.0.1f', 'libsqlite3_0.8.6', 'coreutils_6.12', 'nginx_1.18.0'];
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: datasets,
+                    datasets: resultsData.models.map((model, index) => ({
+                        label: model,
+                        data: [
+                            resultsData.metrics.accuracy[index] + (Math.random() - 0.5) * 0.1,
+                            resultsData.metrics.accuracy[index] + (Math.random() - 0.5) * 0.1,
+                            resultsData.metrics.accuracy[index] + (Math.random() - 0.5) * 0.1,
+                            resultsData.metrics.accuracy[index] + (Math.random() - 0.5) * 0.1
+                        ],
+                        backgroundColor: ['#e74c3c', '#3498db', '#27ae60', '#f39c12'][index] + 'B0',
+                        borderColor: ['#e74c3c', '#3498db', '#27ae60', '#f39c12'][index],
+                        borderWidth: 1
+                    }))
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            title: {
+                                display: true,
+                                text: '准确率'
+                            },
+                            min: 0.7,
+                            max: 1.0,
+                            ticks: {
+                                callback: function(value) {
+                                    return (value * 100).toFixed(0) + '%';
+                                }
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: '数据集'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

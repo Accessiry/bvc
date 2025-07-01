@@ -1,0 +1,569 @@
+/* Dataset Management Page Styles */
+
+.page-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* Statistics Cards */
+.stat-card {
+    transition: all 0.3s ease;
+    border-radius: 12px;
+    border: none;
+    overflow: hidden;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-lg);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--secondary-color), var(--primary-color));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.stat-number {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    margin: 0.5rem 0;
+}
+
+.stat-label {
+    color: var(--muted-text);
+    font-size: 0.9rem;
+    margin: 0;
+}
+
+/* View Toggle */
+.view-toggle {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.view-toggle .btn {
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+}
+
+.view-toggle .btn.active {
+    background: var(--secondary-color);
+    color: white;
+    border-color: var(--secondary-color);
+}
+
+/* Dataset List */
+.dataset-list {
+    max-height: 600px;
+    overflow-y: auto;
+}
+
+.dataset-item {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.dataset-item:hover {
+    background: var(--light-bg);
+}
+
+.dataset-item.active {
+    background: rgba(52, 152, 219, 0.1);
+    border-left: 4px solid var(--secondary-color);
+}
+
+.dataset-item:last-child {
+    border-bottom: none;
+}
+
+.dataset-header {
+    display: flex;
+    justify-content: between;
+    align-items: flex-start;
+    margin-bottom: 0.5rem;
+}
+
+.dataset-name {
+    font-weight: 600;
+    color: var(--dark-text);
+    font-size: 1rem;
+    margin: 0;
+}
+
+.dataset-badges {
+    display: flex;
+    gap: 0.25rem;
+    flex-wrap: wrap;
+}
+
+.dataset-badges .badge {
+    font-size: 0.7rem;
+    padding: 0.25rem 0.5rem;
+}
+
+.dataset-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: var(--muted-text);
+}
+
+.dataset-samples {
+    font-weight: 500;
+}
+
+.dataset-size {
+    color: var(--secondary-color);
+}
+
+/* Grid View */
+.dataset-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.dataset-card {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    background: white;
+}
+
+.dataset-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+    border-color: var(--secondary-color);
+}
+
+.dataset-card.active {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+/* Upload Area */
+.upload-area {
+    border: 2px dashed var(--border-color);
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+.upload-area:hover,
+.upload-area.dragover {
+    border-color: var(--secondary-color);
+    background: rgba(52, 152, 219, 0.05);
+}
+
+.upload-content i {
+    font-size: 3rem;
+    color: var(--muted-text);
+    margin-bottom: 1rem;
+}
+
+.upload-content p {
+    margin: 0.5rem 0;
+    color: var(--dark-text);
+}
+
+.upload-content .text-muted {
+    font-size: 0.9rem;
+}
+
+/* File Preview */
+.file-preview {
+    background: var(--light-bg);
+    border-radius: 6px;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.file-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.file-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 6px;
+    background: var(--secondary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.file-details h6 {
+    margin: 0;
+    color: var(--dark-text);
+}
+
+.file-details p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--muted-text);
+}
+
+/* Upload Progress */
+.upload-progress {
+    margin-top: 1rem;
+}
+
+.progress {
+    height: 1rem;
+    border-radius: 8px;
+    background: var(--light-bg);
+}
+
+.progress-bar {
+    border-radius: 8px;
+    background: linear-gradient(90deg, var(--secondary-color), var(--success-color));
+    transition: width 0.3s ease;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--muted-text);
+}
+
+/* Data Quality Metrics */
+.quality-metric {
+    text-align: center;
+    padding: 1rem;
+    border-radius: 8px;
+    background: var(--light-bg);
+    margin-bottom: 1rem;
+}
+
+.quality-metric .metric-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.quality-metric .metric-label {
+    font-size: 0.9rem;
+    color: var(--muted-text);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.quality-metric.excellent .metric-value {
+    color: var(--success-color);
+}
+
+.quality-metric.good .metric-value {
+    color: var(--warning-color);
+}
+
+.quality-metric.poor .metric-value {
+    color: var(--accent-color);
+}
+
+/* Dataset Actions */
+.dataset-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.dataset-actions .btn {
+    font-size: 0.85rem;
+    padding: 0.25rem 0.75rem;
+}
+
+/* Comparison */
+.vs-label {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--secondary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+}
+
+.comparison-results {
+    margin-top: 1rem;
+}
+
+.comparison-table {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.comparison-table th {
+    background: var(--primary-color);
+    color: white;
+    text-align: center;
+    font-weight: 600;
+}
+
+.comparison-table td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.comparison-table .metric-better {
+    background: rgba(39, 174, 96, 0.1);
+    color: var(--success-color);
+    font-weight: 600;
+}
+
+.comparison-table .metric-worse {
+    background: rgba(231, 76, 60, 0.1);
+    color: var(--accent-color);
+}
+
+/* Filter Controls */
+.form-label {
+    font-weight: 500;
+    color: var(--dark-text);
+    margin-bottom: 0.5rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+/* Status Badges */
+.status-ready {
+    background: var(--success-color);
+}
+
+.status-processing {
+    background: var(--warning-color);
+}
+
+.status-error {
+    background: var(--accent-color);
+}
+
+.status-uploading {
+    background: var(--secondary-color);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .dataset-actions {
+        flex-direction: column;
+    }
+    
+    .dataset-actions .btn {
+        width: 100%;
+        margin-bottom: 0.25rem;
+    }
+    
+    .comparison-controls .vs-label {
+        margin: 0.5rem 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .stat-card {
+        margin-bottom: 1rem;
+    }
+    
+    .dataset-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .dataset-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.25rem;
+    }
+    
+    .upload-area {
+        padding: 1.5rem 1rem;
+    }
+    
+    .upload-content i {
+        font-size: 2rem;
+    }
+    
+    .quality-metric {
+        margin-bottom: 0.5rem;
+    }
+    
+    .quality-metric .metric-value {
+        font-size: 1.5rem;
+    }
+}
+
+/* Loading States */
+.dataset-item.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.dataset-item.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: loading 1.5s infinite;
+}
+
+/* Chart Containers in Dataset Analysis */
+.chart-container {
+    height: 200px;
+}
+
+#labelDistributionChart,
+#architectureChart {
+    max-height: 200px;
+}
+
+/* Modal Customizations */
+.modal-lg {
+    max-width: 800px;
+}
+
+.modal-header {
+    background: var(--primary-color);
+    color: white;
+}
+
+.modal-header .btn-close {
+    filter: invert(1);
+}
+
+/* Form Validation */
+.form-control.is-invalid,
+.form-select.is-invalid {
+    border-color: var(--accent-color);
+}
+
+.form-control.is-valid,
+.form-select.is-valid {
+    border-color: var(--success-color);
+}
+
+.invalid-feedback {
+    color: var(--accent-color);
+    font-size: 0.85rem;
+}
+
+.valid-feedback {
+    color: var(--success-color);
+    font-size: 0.85rem;
+}
+
+/* Data Split Visualization */
+.split-visualization {
+    display: flex;
+    height: 30px;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-top: 1rem;
+}
+
+.split-train {
+    background: var(--success-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.split-val {
+    background: var(--warning-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.split-test {
+    background: var(--secondary-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+/* Animation for new dataset items */
+.dataset-item.new {
+    animation: slideInFromRight 0.5s ease;
+}
+
+@keyframes slideInFromRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* Search highlighting */
+.search-highlight {
+    background: rgba(255, 235, 59, 0.3);
+    font-weight: 600;
+}
+
+/* Empty states */
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--muted-text);
+}
+
+.empty-state i {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.empty-state h5 {
+    color: var(--dark-text);
+    margin-bottom: 0.5rem;
+}
+
+.empty-state p {
+    margin: 0;
+    font-size: 0.9rem;
+}
