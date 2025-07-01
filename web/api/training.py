@@ -1,5 +1,5 @@
 # Flask backend API for BVC vulnerability detection system
-from flask import Flask, request, jsonify, send_file
+from flask import Flask, request, jsonify, send_file, send_from_directory
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit
 import os
@@ -13,11 +13,13 @@ import subprocess
 import pandas as pd
 import numpy as np
 from werkzeug.utils import secure_filename
+import mimetypes
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'bvc-vuln-detection-system'
 app.config['UPLOAD_FOLDER'] = os.path.join(os.path.dirname(__file__), '../assets/datasets')
 app.config['MODEL_FOLDER'] = os.path.join(os.path.dirname(__file__), '../assets/models')
+app.config['WEB_FOLDER'] = os.path.join(os.path.dirname(__file__), '..')  # Points to web directory
 app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024  # 500MB max file size
 
 CORS(app, origins="*")
@@ -241,6 +243,58 @@ def mock_training_process(task_id, config):
             'task_id': task_id,
             'error': str(e)
         })
+
+# Static File Serving Routes
+
+@app.route('/')
+def serve_index():
+    """Serve the main index.html page"""
+    try:
+        return send_from_directory(app.config['WEB_FOLDER'], 'index.html')
+    except Exception as e:
+        return jsonify({'error': f'Failed to serve index.html: {str(e)}'}), 500
+
+@app.route('/<path:filename>')
+def serve_static_files(filename):
+    """Serve static files (HTML, CSS, JS, images, etc.) from the web directory"""
+    try:
+        # Security check: prevent directory traversal
+        if '..' in filename or filename.startswith('/'):
+            return jsonify({'error': 'Invalid file path'}), 400
+        
+        # Get the full file path
+        file_path = os.path.join(app.config['WEB_FOLDER'], filename)
+        
+        # Check if file exists
+        if not os.path.exists(file_path):
+            return jsonify({'error': 'File not found'}), 404
+        
+        # Get the directory and filename
+        directory = os.path.dirname(file_path)
+        basename = os.path.basename(file_path)
+        
+        # Set proper MIME type
+        mimetype = mimetypes.guess_type(filename)[0]
+        if mimetype is None:
+            # Default MIME types for common file extensions
+            ext = os.path.splitext(filename)[1].lower()
+            if ext == '.html':
+                mimetype = 'text/html'
+            elif ext == '.css':
+                mimetype = 'text/css'
+            elif ext == '.js':
+                mimetype = 'application/javascript'
+            elif ext == '.json':
+                mimetype = 'application/json'
+            elif ext in ['.png', '.jpg', '.jpeg', '.gif', '.svg']:
+                mimetype = f'image/{ext[1:]}'
+            else:
+                mimetype = 'application/octet-stream'
+        
+        return send_from_directory(directory, basename, mimetype=mimetype)
+        
+    except Exception as e:
+        return jsonify({'error': f'Failed to serve file: {str(e)}'}), 500
 
 # API Routes
 
