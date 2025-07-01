@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学院风漏洞检测系统 - 主页</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/academic.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-academic">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-shield-alt"></i> BVC 漏洞检测系统</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="index.html">概述</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="training.html">训练过程</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="datasets.html">数据集管理</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="results.html">实验结果</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="analysis.html">数据分析</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="docs.html">使用说明</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section bg-gradient-primary text-white py-5">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <h1 class="display-4 fw-bold mb-4">学院风漏洞检测系统</h1>
+                    <p class="lead mb-4">基于深度学习的二进制代码漏洞检测可视化平台，支持多种先进模型的训练、评估和分析。</p>
+                    <div class="d-flex gap-3">
+                        <a href="training.html" class="btn btn-light btn-lg">
+                            <i class="fas fa-play"></i> 开始训练
+                        </a>
+                        <a href="datasets.html" class="btn btn-outline-light btn-lg">
+                            <i class="fas fa-database"></i> 管理数据集
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="text-center">
+                        <i class="fas fa-chart-line hero-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Overview -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">系统功能特色</h2>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <div class="feature-icon mb-3">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <h5 class="card-title">多模型支持</h5>
+                            <p class="card-text">支持VulSeeker、SENSE、FIT、SAFE等多种先进的漏洞检测模型</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <div class="feature-icon mb-3">
+                                <i class="fas fa-chart-area"></i>
+                            </div>
+                            <h5 class="card-title">实时监控</h5>
+                            <p class="card-text">实时显示训练过程中的损失函数、准确率变化和训练进度</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <div class="feature-icon mb-3">
+                                <i class="fas fa-database"></i>
+                            </div>
+                            <h5 class="card-title">数据集管理</h5>
+                            <p class="card-text">完整的数据集上传、预处理、分析和管理功能</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="feature-card card h-100 border-0 shadow-sm">
+                        <div class="card-body text-center">
+                            <div class="feature-icon mb-3">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <h5 class="card-title">学术规范</h5>
+                            <p class="card-text">提供完整的实验记录、可重现性保证和学术报告生成</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Supported Models -->
+    <section class="py-5 bg-light">
+        <div class="container">
+            <h2 class="text-center mb-5">支持的检测模型</h2>
+            <div class="row g-4">
+                <div class="col-lg-6">
+                    <div class="model-card card border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="model-icon me-3">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <h5 class="card-title mb-0">VulSeeker</h5>
+                            </div>
+                            <p class="card-text">基于孪生神经网络的漏洞相似性检测模型，擅长发现已知漏洞的变种。</p>
+                            <div class="model-stats">
+                                <small class="text-muted">准确率: 87.3% | F1-Score: 84.1%</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="model-card card border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="model-icon me-3">
+                                    <i class="fas fa-eye"></i>
+                                </div>
+                                <h5 class="card-title mb-0">SENSE</h5>
+                            </div>
+                            <p class="card-text">基于图神经网络的语义感知漏洞检测模型，专注于代码语义理解。</p>
+                            <div class="model-stats">
+                                <small class="text-muted">准确率: 89.7% | F1-Score: 86.4%</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="model-card card border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="model-icon me-3">
+                                    <i class="fas fa-cogs"></i>
+                                </div>
+                                <h5 class="card-title mb-0">FIT</h5>
+                            </div>
+                            <p class="card-text">函数信息转换模型，通过多层特征提取实现精确的漏洞定位。</p>
+                            <div class="model-stats">
+                                <small class="text-muted">准确率: 85.9% | F1-Score: 82.7%</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="model-card card border-0 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="model-icon me-3">
+                                    <i class="fas fa-shield-alt"></i>
+                                </div>
+                                <h5 class="card-title mb-0">SAFE</h5>
+                            </div>
+                            <p class="card-text">安全感知特征嵌入模型，结合静态分析和动态特征进行检测。</p>
+                            <div class="model-stats">
+                                <small class="text-muted">准确率: 91.2% | F1-Score: 88.9%</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Stats -->
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-5">系统统计</h2>
+            <div class="row text-center">
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="stat-card">
+                        <div class="stat-number" data-count="15">0</div>
+                        <div class="stat-label">支持的数据集</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="stat-card">
+                        <div class="stat-number" data-count="4">0</div>
+                        <div class="stat-label">检测模型</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="stat-card">
+                        <div class="stat-number" data-count="128">0</div>
+                        <div class="stat-label">已完成训练任务</div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-6 mb-4">
+                    <div class="stat-card">
+                        <div class="stat-number" data-count="92">0</div>
+                        <div class="stat-label">平均检测准确率(%)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2024 BVC 学院风漏洞检测系统. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <a href="#" class="text-white me-3"><i class="fab fa-github"></i></a>
+                    <a href="#" class="text-white me-3"><i class="fas fa-book"></i></a>
+                    <a href="#" class="text-white"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>

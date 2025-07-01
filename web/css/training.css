@@ -1,0 +1,400 @@
+/* Training Page Specific Styles */
+
+.page-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.training-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.status-indicator {
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-weight: 500;
+    font-size: 0.9rem;
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.status-indicator.ready {
+    background: var(--success-color);
+    color: white;
+}
+
+.status-indicator.training {
+    background: var(--warning-color);
+    color: white;
+    animation: pulse 2s infinite;
+}
+
+.status-indicator.paused {
+    background: var(--warning-color);
+    color: white;
+}
+
+.status-indicator.error {
+    background: var(--accent-color);
+    color: white;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+/* Configuration Panel */
+.card-header h5, .card-header h6 {
+    color: var(--dark-text);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--dark-text);
+    margin-bottom: 0.5rem;
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+/* Training Controls */
+.btn {
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    transform: none;
+}
+
+/* Progress Bars */
+.progress {
+    height: 1rem;
+    border-radius: 10px;
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.progress-bar {
+    border-radius: 10px;
+    transition: width 0.6s ease;
+}
+
+.training-time {
+    font-size: 0.85rem;
+}
+
+/* Metrics Display */
+.metric-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.metric-item:last-child {
+    border-bottom: none;
+}
+
+.metric-label {
+    font-weight: 500;
+    color: var(--dark-text);
+}
+
+.metric-value {
+    font-weight: 600;
+    color: var(--secondary-color);
+    font-family: 'Courier New', monospace;
+}
+
+/* Training Logs */
+.training-logs {
+    height: 300px;
+    overflow-y: auto;
+    padding: 1rem;
+    background: #f8f9fa;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    border-radius: 0 0 8px 8px;
+}
+
+.log-entry {
+    display: flex;
+    margin-bottom: 0.5rem;
+    padding: 0.25rem 0;
+}
+
+.log-time {
+    color: var(--muted-text);
+    margin-right: 1rem;
+    white-space: nowrap;
+    font-size: 0.8rem;
+}
+
+.log-message {
+    flex: 1;
+    word-wrap: break-word;
+}
+
+.log-entry.info .log-message {
+    color: var(--secondary-color);
+}
+
+.log-entry.success .log-message {
+    color: var(--success-color);
+}
+
+.log-entry.warning .log-message {
+    color: var(--warning-color);
+}
+
+.log-entry.error .log-message {
+    color: var(--accent-color);
+}
+
+.log-entry.debug .log-message {
+    color: var(--muted-text);
+}
+
+/* Chart Containers */
+.chart-container {
+    position: relative;
+    width: 100%;
+    height: 200px;
+}
+
+.chart-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
+/* History Table */
+.table-responsive {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table thead th {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    font-weight: 600;
+    text-align: center;
+}
+
+.table tbody td {
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table tbody tr:hover {
+    background: var(--light-bg);
+}
+
+.badge {
+    font-size: 0.75rem;
+}
+
+/* Accordion Customization */
+.accordion-button {
+    background: var(--light-bg);
+    color: var(--dark-text);
+    font-weight: 500;
+}
+
+.accordion-button:not(.collapsed) {
+    background: var(--secondary-color);
+    color: white;
+}
+
+.accordion-button:focus {
+    box-shadow: 0 0 0 0.2rem rgba(52, 152, 219, 0.25);
+}
+
+/* Modal Customization */
+.modal-header {
+    background: var(--primary-color);
+    color: white;
+}
+
+.modal-header .btn-close {
+    filter: invert(1);
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .container-fluid {
+        padding: 0 1rem;
+    }
+    
+    .col-lg-3, .col-lg-6 {
+        margin-bottom: 1rem;
+    }
+    
+    .training-logs {
+        height: 200px;
+    }
+    
+    .metric-item {
+        padding: 0.25rem 0;
+    }
+}
+
+@media (max-width: 768px) {
+    .page-header {
+        text-align: center;
+    }
+    
+    .training-status {
+        justify-content: center;
+        margin-top: 1rem;
+    }
+    
+    .chart-container {
+        height: 150px;
+    }
+    
+    .table {
+        font-size: 0.85rem;
+    }
+    
+    .btn {
+        font-size: 0.9rem;
+        padding: 0.5rem 1rem;
+    }
+}
+
+/* Loading States */
+.training-card.loading {
+    pointer-events: none;
+    opacity: 0.7;
+}
+
+.training-card.loading::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+
+/* Parameter Validation */
+.form-control.is-invalid,
+.form-select.is-invalid {
+    border-color: var(--accent-color);
+}
+
+.form-control.is-valid,
+.form-select.is-valid {
+    border-color: var(--success-color);
+}
+
+.invalid-feedback {
+    color: var(--accent-color);
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+.valid-feedback {
+    color: var(--success-color);
+    font-size: 0.85rem;
+    margin-top: 0.25rem;
+}
+
+/* Training Control Buttons */
+#startTraining {
+    background: linear-gradient(135deg, var(--success-color), #229954);
+    border: none;
+}
+
+#pauseTraining {
+    background: linear-gradient(135deg, var(--warning-color), #d68910);
+    border: none;
+}
+
+#stopTraining {
+    background: linear-gradient(135deg, var(--accent-color), #c0392b);
+    border: none;
+}
+
+/* Early Stopping Indicator */
+.early-stopping-info {
+    background: rgba(243, 156, 18, 0.1);
+    border: 1px solid var(--warning-color);
+    border-radius: 6px;
+    padding: 0.75rem;
+    margin-top: 1rem;
+}
+
+.early-stopping-info h6 {
+    color: var(--warning-color);
+    margin-bottom: 0.5rem;
+}
+
+.early-stopping-info p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+/* Real-time Updates Animation */
+.metric-value.updating {
+    animation: highlight 0.5s ease;
+}
+
+@keyframes highlight {
+    0% { background-color: transparent; }
+    50% { background-color: rgba(52, 152, 219, 0.2); }
+    100% { background-color: transparent; }
+}
+
+/* WebSocket Connection Status */
+.connection-status {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    z-index: 1000;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.connection-status.connected {
+    background: var(--success-color);
+    color: white;
+}
+
+.connection-status.disconnected {
+    background: var(--accent-color);
+    color: white;
+}
+
+.connection-status.connecting {
+    background: var(--warning-color);
+    color: white;
+    animation: pulse 1s infinite;
+}

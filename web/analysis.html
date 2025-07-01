@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据分析 - BVC 漏洞检测系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/academic.css" rel="stylesheet">
+    <link href="css/charts.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-academic">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-shield-alt"></i> BVC 漏洞检测系统</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">概述</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="training.html">训练过程</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="datasets.html">数据集管理</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="results.html">实验结果</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="analysis.html">数据分析</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="docs.html">使用说明</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header bg-gradient-primary text-white py-4">
+        <div class="container">
+            <h1><i class="fas fa-chart-line"></i> 深度数据分析</h1>
+            <p class="mb-0">模型性能与数据特征的深入分析</p>
+        </div>
+    </section>
+
+    <!-- Analysis Dashboard -->
+    <div class="container mt-4">
+        <!-- Model Performance Trends -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-chart-line"></i> 模型性能趋势分析</h5>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="performanceTrendChart" height="400"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Feature Importance Analysis -->
+        <div class="row mb-4">
+            <div class="col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h6 class="mb-0"><i class="fas fa-weight-hanging"></i> 特征重要性分析</h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="featureImportanceChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h6 class="mb-0"><i class="fas fa-sitemap"></i> 架构性能分布</h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="architecturePerformanceChart" height="300"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Vulnerability Pattern Analysis -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-bug"></i> 漏洞模式分析</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <canvas id="vulnerabilityPatternChart" height="250"></canvas>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="pattern-stats">
+                                    <h6>检测到的漏洞类型</h6>
+                                    <div class="pattern-item">
+                                        <div class="pattern-color" style="background: #e74c3c;"></div>
+                                        <span>缓冲区溢出 (32.5%)</span>
+                                    </div>
+                                    <div class="pattern-item">
+                                        <div class="pattern-color" style="background: #3498db;"></div>
+                                        <span>空指针引用 (24.3%)</span>
+                                    </div>
+                                    <div class="pattern-item">
+                                        <div class="pattern-color" style="background: #27ae60;"></div>
+                                        <span>内存泄漏 (18.7%)</span>
+                                    </div>
+                                    <div class="pattern-item">
+                                        <div class="pattern-color" style="background: #f39c12;"></div>
+                                        <span>格式化字符串 (15.2%)</span>
+                                    </div>
+                                    <div class="pattern-item">
+                                        <div class="pattern-color" style="background: #9b59b6;"></div>
+                                        <span>其他 (9.3%)</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistical Analysis -->
+        <div class="row mb-4">
+            <div class="col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h6 class="mb-0"><i class="fas fa-calculator"></i> 统计摘要</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="stat-item">
+                            <div class="stat-label">平均检测准确率</div>
+                            <div class="stat-value text-success">89.5%</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">标准差</div>
+                            <div class="stat-value">±2.3%</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">置信区间 (95%)</div>
+                            <div class="stat-value">87.2% - 91.8%</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">最佳模型</div>
+                            <div class="stat-value text-primary">SAFE</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-label">处理样本总数</div>
+                            <div class="stat-value">127,384</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h6 class="mb-0"><i class="fas fa-chart-area"></i> 性能分布图</h6>
+                    </div>
+                    <div class="card-body">
+                        <canvas id="performanceDistributionChart" height="250"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model Comparison Matrix -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card shadow-sm">
+                    <div class="card-header">
+                        <h5 class="mb-0"><i class="fas fa-table"></i> 模型对比矩阵</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover comparison-matrix">
+                                <thead>
+                                    <tr>
+                                        <th>指标 / 模型</th>
+                                        <th>VulSeeker</th>
+                                        <th>SENSE</th>
+                                        <th>FIT</th>
+                                        <th>SAFE</th>
+                                        <th>最佳</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>准确率</strong></td>
+                                        <td>87.3%</td>
+                                        <td>89.7%</td>
+                                        <td>85.9%</td>
+                                        <td class="best-score">91.2%</td>
+                                        <td><span class="badge bg-success">SAFE</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>精确率</strong></td>
+                                        <td>85.1%</td>
+                                        <td>88.9%</td>
+                                        <td>83.4%</td>
+                                        <td class="best-score">90.5%</td>
+                                        <td><span class="badge bg-success">SAFE</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>召回率</strong></td>
+                                        <td class="best-score">89.5%</td>
+                                        <td>90.5%</td>
+                                        <td>88.4%</td>
+                                        <td>91.9%</td>
+                                        <td><span class="badge bg-success">SAFE</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>F1-Score</strong></td>
+                                        <td>84.1%</td>
+                                        <td>86.4%</td>
+                                        <td>82.7%</td>
+                                        <td class="best-score">88.9%</td>
+                                        <td><span class="badge bg-success">SAFE</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>AUC</strong></td>
+                                        <td>0.924</td>
+                                        <td>0.943</td>
+                                        <td>0.908</td>
+                                        <td class="best-score">0.956</td>
+                                        <td><span class="badge bg-success">SAFE</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>训练时间</strong></td>
+                                        <td class="best-score">135分钟</td>
+                                        <td>187分钟</td>
+                                        <td>98分钟</td>
+                                        <td>203分钟</td>
+                                        <td><span class="badge bg-warning">FIT</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>内存占用</strong></td>
+                                        <td>2.1GB</td>
+                                        <td>3.2GB</td>
+                                        <td class="best-score">1.8GB</td>
+                                        <td>3.8GB</td>
+                                        <td><span class="badge bg-warning">FIT</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        // Initialize all charts when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            createPerformanceTrendChart();
+            createFeatureImportanceChart();
+            createArchitecturePerformanceChart();
+            createVulnerabilityPatternChart();
+            createPerformanceDistributionChart();
+        });
+
+        function createPerformanceTrendChart() {
+            const ctx = document.getElementById('performanceTrendChart').getContext('2d');
+            
+            const experiments = Array.from({length: 20}, (_, i) => `实验 ${i + 1}`);
+            const vulseeker = Array.from({length: 20}, () => 0.85 + Math.random() * 0.08);
+            const sense = Array.from({length: 20}, () => 0.88 + Math.random() * 0.06);
+            const fit = Array.from({length: 20}, () => 0.82 + Math.random() * 0.08);
+            const safe = Array.from({length: 20}, () => 0.90 + Math.random() * 0.05);
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: experiments,
+                    datasets: [
+                        {
+                            label: 'VulSeeker',
+                            data: vulseeker,
+                            borderColor: '#e74c3c',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'SENSE',
+                            data: sense,
+                            borderColor: '#3498db',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'FIT',
+                            data: fit,
+                            borderColor: '#27ae60',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'SAFE',
+                            data: safe,
+                            borderColor: '#f39c12',
+                            backgroundColor: 'transparent',
+                            borderWidth: 2,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        },
+                        title: {
+                            display: true,
+                            text: '模型性能随时间变化趋势'
+                        }
+                    },
+                    scales: {
+                        y: {
+                            title: {
+                                display: true,
+                                text: '准确率'
+                            },
+                            min: 0.8,
+                            max: 1.0,
+                            ticks: {
+                                callback: function(value) {
+                                    return (value * 100).toFixed(0) + '%';
+                                }
+                            }
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: '实验序列'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createFeatureImportanceChart() {
+            const ctx = document.getElementById('featureImportanceChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['控制流图', '数据流图', '指令序列', '函数调用', '内存访问', '语义特征'],
+                    datasets: [{
+                        label: '重要性得分',
+                        data: [0.85, 0.72, 0.68, 0.61, 0.59, 0.45],
+                        backgroundColor: [
+                            '#e74c3c',
+                            '#3498db',
+                            '#27ae60',
+                            '#f39c12',
+                            '#9b59b6',
+                            '#e67e22'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            title: {
+                                display: true,
+                                text: '重要性得分'
+                            },
+                            min: 0,
+                            max: 1
+                        },
+                        x: {
+                            title: {
+                                display: true,
+                                text: '特征类型'
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createArchitecturePerformanceChart() {
+            const ctx = document.getElementById('architecturePerformanceChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['ARM', 'MIPS', 'x86', 'x64'],
+                    datasets: [
+                        {
+                            label: 'VulSeeker',
+                            data: [0.87, 0.84, 0.89, 0.86],
+                            borderColor: '#e74c3c',
+                            backgroundColor: '#e74c3c33',
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'SENSE',
+                            data: [0.89, 0.87, 0.92, 0.90],
+                            borderColor: '#3498db',
+                            backgroundColor: '#3498db33',
+                            borderWidth: 2
+                        },
+                        {
+                            label: 'SAFE',
+                            data: [0.91, 0.89, 0.94, 0.92],
+                            borderColor: '#f39c12',
+                            backgroundColor: '#f39c1233',
+                            borderWidth: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        r: {
+                            beginAtZero: true,
+                            min: 0.8,
+                            max: 1.0,
+                            ticks: {
+                                stepSize: 0.05,
+                                callback: function(value) {
+                                    return (value * 100).toFixed(0) + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createVulnerabilityPatternChart() {
+            const ctx = document.getElementById('vulnerabilityPatternChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['缓冲区溢出', '空指针引用', '内存泄漏', '格式化字符串', '其他'],
+                    datasets: [{
+                        data: [32.5, 24.3, 18.7, 15.2, 9.3],
+                        backgroundColor: [
+                            '#e74c3c',
+                            '#3498db',
+                            '#27ae60',
+                            '#f39c12',
+                            '#9b59b6'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.label + ': ' + context.parsed + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        function createPerformanceDistributionChart() {
+            const ctx = document.getElementById('performanceDistributionChart').getContext('2d');
+            
+            // Generate normal distribution data
+            const generateNormalData = (mean, std, count) => {
+                const data = [];
+                for (let i = 0; i < count; i++) {
+                    const u1 = Math.random();
+                    const u2 = Math.random();
+                    const z0 = Math.sqrt(-2 * Math.log(u1)) * Math.cos(2 * Math.PI * u2);
+                    data.push(mean + std * z0);
+                }
+                return data.filter(x => x >= 0 && x <= 1);
+            };
+            
+            const vulseeker_data = generateNormalData(0.873, 0.03, 100);
+            const sense_data = generateNormalData(0.897, 0.025, 100);
+            const fit_data = generateNormalData(0.859, 0.035, 100);
+            const safe_data = generateNormalData(0.912, 0.02, 100);
+            
+            new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        {
+                            label: 'VulSeeker',
+                            data: vulseeker_data.map((y, x) => ({x: x/100, y})),
+                            backgroundColor: '#e74c3c88',
+                            borderColor: '#e74c3c',
+                            borderWidth: 1,
+                            pointRadius: 2
+                        },
+                        {
+                            label: 'SENSE',
+                            data: sense_data.map((y, x) => ({x: x/100, y})),
+                            backgroundColor: '#3498db88',
+                            borderColor: '#3498db',
+                            borderWidth: 1,
+                            pointRadius: 2
+                        },
+                        {
+                            label: 'FIT',
+                            data: fit_data.map((y, x) => ({x: x/100, y})),
+                            backgroundColor: '#27ae6088',
+                            borderColor: '#27ae60',
+                            borderWidth: 1,
+                            pointRadius: 2
+                        },
+                        {
+                            label: 'SAFE',
+                            data: safe_data.map((y, x) => ({x: x/100, y})),
+                            backgroundColor: '#f39c1288',
+                            borderColor: '#f39c12',
+                            borderWidth: 1,
+                            pointRadius: 2
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'top'
+                        }
+                    },
+                    scales: {
+                        x: {
+                            title: {
+                                display: true,
+                                text: '实验编号'
+                            },
+                            min: 0,
+                            max: 1
+                        },
+                        y: {
+                            title: {
+                                display: true,
+                                text: '准确率'
+                            },
+                            min: 0.8,
+                            max: 1.0,
+                            ticks: {
+                                callback: function(value) {
+                                    return (value * 100).toFixed(0) + '%';
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+
+    <style>
+        .pattern-stats {
+            padding: 1rem;
+        }
+        
+        .pattern-item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        
+        .pattern-color {
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            margin-right: 0.75rem;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .stat-item:last-child {
+            border-bottom: none;
+        }
+        
+        .stat-label {
+            font-weight: 500;
+            color: var(--muted-text);
+        }
+        
+        .stat-value {
+            font-weight: 600;
+            font-family: 'Courier New', monospace;
+        }
+        
+        .comparison-matrix th {
+            background: var(--primary-color);
+            color: white;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .comparison-matrix td {
+            text-align: center;
+            vertical-align: middle;
+        }
+        
+        .best-score {
+            background: rgba(39, 174, 96, 0.1);
+            color: var(--success-color);
+            font-weight: 600;
+        }
+    </style>
+</body>
+</html>

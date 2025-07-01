@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>数据集管理 - BVC 漏洞检测系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="css/academic.css" rel="stylesheet">
+    <link href="css/datasets.css" rel="stylesheet">
+    <link href="css/charts.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-academic">
+        <div class="container">
+            <a class="navbar-brand" href="index.html"><i class="fas fa-shield-alt"></i> BVC 漏洞检测系统</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="index.html">概述</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="training.html">训练过程</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="datasets.html">数据集管理</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="results.html">实验结果</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="analysis.html">数据分析</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="docs.html">使用说明</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header bg-gradient-primary text-white py-4">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1><i class="fas fa-database"></i> 数据集管理</h1>
+                    <p class="mb-0">管理、分析和预处理训练数据集</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <button class="btn btn-light" data-bs-toggle="modal" data-bs-target="#uploadModal">
+                        <i class="fas fa-upload"></i> 上传数据集
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dataset Overview -->
+    <div class="container-fluid mt-4">
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card stat-card">
+                    <div class="card-body text-center">
+                        <div class="stat-icon mb-3">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <h4 class="stat-number" id="totalDatasets">0</h4>
+                        <p class="stat-label">总数据集数量</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card stat-card">
+                    <div class="card-body text-center">
+                        <div class="stat-icon mb-3">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h4 class="stat-number" id="totalSamples">0</h4>
+                        <p class="stat-label">总样本数量</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card stat-card">
+                    <div class="card-body text-center">
+                        <div class="stat-icon mb-3">
+                            <i class="fas fa-microchip"></i>
+                        </div>
+                        <h4 class="stat-number" id="totalArchitectures">0</h4>
+                        <p class="stat-label">支持架构数量</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6 mb-3">
+                <div class="card stat-card">
+                    <div class="card-body text-center">
+                        <div class="stat-icon mb-3">
+                            <i class="fas fa-hdd"></i>
+                        </div>
+                        <h4 class="stat-number" id="totalSize">0</h4>
+                        <p class="stat-label">总存储大小(GB)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Left Panel - Dataset List and Filters -->
+            <div class="col-lg-4">
+                <!-- Filters -->
+                <div class="card shadow-sm mb-3">
+                    <div class="card-header">
+                        <h6 class="mb-0"><i class="fas fa-filter"></i> 筛选器</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label for="architectureFilter" class="form-label">架构类型</label>
+                            <select class="form-select" id="architectureFilter">
+                                <option value="">全部架构</option>
+                                <option value="arm">ARM</option>
+                                <option value="mips">MIPS</option>
+                                <option value="x86">x86</option>
+                                <option value="x64">x64</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="optimizationFilter" class="form-label">优化级别</label>
+                            <select class="form-select" id="optimizationFilter">
+                                <option value="">全部级别</option>
+                                <option value="O0">O0</option>
+                                <option value="O1">O1</option>
+                                <option value="O2">O2</option>
+                                <option value="O3">O3</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="searchDataset" class="form-label">搜索数据集</label>
+                            <input type="text" class="form-control" id="searchDataset" placeholder="输入数据集名称...">
+                        </div>
+                        <div class="d-flex gap-2">
+                            <button class="btn btn-primary btn-sm" id="applyFilters">
+                                <i class="fas fa-search"></i> 应用筛选
+                            </button>
+                            <button class="btn btn-outline-secondary btn-sm" id="clearFilters">
+                                <i class="fas fa-times"></i> 清除
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dataset List -->
+                <div class="card shadow-sm">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0"><i class="fas fa-list"></i> 数据集列表</h6>
+                        <div class="view-toggle">
+                            <button class="btn btn-sm btn-outline-secondary active" id="listView">
+                                <i class="fas fa-list"></i>
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary" id="gridView">
+                                <i class="fas fa-th"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="dataset-list" id="datasetList">
+                            <!-- Dataset items will be populated here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Dataset Details and Analysis -->
+            <div class="col-lg-8">
+                <!-- Dataset Details -->
+                <div class="card shadow-sm mb-3" id="datasetDetails" style="display: none;">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h6 class="mb-0"><i class="fas fa-info-circle"></i> 数据集详情</h6>
+                        <div class="dataset-actions">
+                            <button class="btn btn-sm btn-outline-primary" id="preprocessDataset">
+                                <i class="fas fa-cogs"></i> 预处理
+                            </button>
+                            <button class="btn btn-sm btn-outline-success" id="downloadDataset">
+                                <i class="fas fa-download"></i> 下载
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" id="deleteDataset">
+                                <i class="fas fa-trash"></i> 删除
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td><strong>数据集名称:</strong></td>
+                                        <td id="detailName">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>架构类型:</strong></td>
+                                        <td id="detailArchitecture">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>优化级别:</strong></td>
+                                        <td id="detailOptimization">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>样本数量:</strong></td>
+                                        <td id="detailSamples">-</td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                <table class="table table-sm table-borderless">
+                                    <tr>
+                                        <td><strong>文件大小:</strong></td>
+                                        <td id="detailSize">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>创建时间:</strong></td>
+                                        <td id="detailCreated">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>最后修改:</strong></td>
+                                        <td id="detailModified">-</td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>状态:</strong></td>
+                                        <td id="detailStatus">-</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Analysis -->
+                <div class="row" id="dataAnalysis" style="display: none;">
+                    <!-- Distribution Chart -->
+                    <div class="col-md-6 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-header">
+                                <h6 class="mb-0"><i class="fas fa-chart-pie"></i> 标签分布</h6>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="labelDistributionChart" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Architecture Distribution -->
+                    <div class="col-md-6 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-header">
+                                <h6 class="mb-0"><i class="fas fa-chart-bar"></i> 架构分布</h6>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="architectureChart" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Data Quality -->
+                    <div class="col-12 mb-3">
+                        <div class="card shadow-sm">
+                            <div class="card-header">
+                                <h6 class="mb-0"><i class="fas fa-clipboard-check"></i> 数据质量报告</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="quality-metric">
+                                            <div class="metric-value" id="completenessScore">-</div>
+                                            <div class="metric-label">完整性</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="quality-metric">
+                                            <div class="metric-value" id="balanceScore">-</div>
+                                            <div class="metric-label">平衡性</div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="quality-metric">
+                                            <div class="metric-value" id="consistencyScore">-</div>
+                                            <div class="metric-label">一致性</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="quality-details mt-3">
+                                    <div class="alert alert-info" id="qualityReport">
+                                        选择数据集以查看详细的质量分析报告
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dataset Comparison -->
+                <div class="card shadow-sm" id="datasetComparison" style="display: none;">
+                    <div class="card-header">
+                        <h6 class="mb-0"><i class="fas fa-balance-scale"></i> 数据集对比</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="comparison-controls mb-3">
+                            <div class="row">
+                                <div class="col-md-5">
+                                    <select class="form-select" id="compareDataset1">
+                                        <option value="">选择数据集1</option>
+                                    </select>
+                                </div>
+                                <div class="col-md-2 text-center">
+                                    <span class="vs-label">VS</span>
+                                </div>
+                                <div class="col-md-5">
+                                    <select class="form-select" id="compareDataset2">
+                                        <option value="">选择数据集2</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="comparison-results" id="comparisonResults">
+                            <!-- Comparison results will be displayed here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Upload Modal -->
+    <div class="modal fade" id="uploadModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-upload"></i> 上传数据集</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <!-- Basic Information -->
+                        <h6 class="mb-3">基本信息</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="datasetName" class="form-label">数据集名称</label>
+                                <input type="text" class="form-control" id="datasetName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="datasetVersion" class="form-label">版本</label>
+                                <input type="text" class="form-control" id="datasetVersion" placeholder="例: 1.0.1f">
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="datasetArchitecture" class="form-label">架构类型</label>
+                                <select class="form-select" id="datasetArchitecture" required>
+                                    <option value="">选择架构</option>
+                                    <option value="arm">ARM</option>
+                                    <option value="mips">MIPS</option>
+                                    <option value="x86">x86</option>
+                                    <option value="x64">x64</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="datasetOptimization" class="form-label">优化级别</label>
+                                <select class="form-select" id="datasetOptimization" required>
+                                    <option value="">选择优化级别</option>
+                                    <option value="O0">O0</option>
+                                    <option value="O1">O1</option>
+                                    <option value="O2">O2</option>
+                                    <option value="O3">O3</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="datasetDescription" class="form-label">描述</label>
+                            <textarea class="form-control" id="datasetDescription" rows="2" placeholder="数据集描述信息"></textarea>
+                        </div>
+
+                        <!-- File Upload -->
+                        <h6 class="mb-3">文件上传</h6>
+                        <div class="upload-area" id="uploadArea">
+                            <div class="upload-content">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>拖拽文件到此处或点击选择文件</p>
+                                <p class="text-muted">支持 CSV, JSON, ZIP 格式</p>
+                            </div>
+                            <input type="file" id="datasetFile" accept=".csv,.json,.zip" style="display: none;" required>
+                        </div>
+                        <div class="file-preview" id="filePreview" style="display: none;">
+                            <!-- File preview will be shown here -->
+                        </div>
+
+                        <!-- Upload Progress -->
+                        <div class="upload-progress" id="uploadProgress" style="display: none;">
+                            <div class="progress mb-2">
+                                <div class="progress-bar" id="progressBar" style="width: 0%"></div>
+                            </div>
+                            <div class="progress-info">
+                                <span id="progressText">准备上传...</span>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="uploadButton">
+                        <i class="fas fa-upload"></i> 开始上传
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preprocessing Modal -->
+    <div class="modal fade" id="preprocessModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"><i class="fas fa-cogs"></i> 数据预处理</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="preprocessForm">
+                        <!-- Data Cleaning -->
+                        <h6 class="mb-3">数据清洗</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="removeDuplicates" checked>
+                                    <label class="form-check-label" for="removeDuplicates">
+                                        移除重复样本
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="handleMissing" checked>
+                                    <label class="form-check-label" for="handleMissing">
+                                        处理缺失值
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="removeOutliers">
+                                    <label class="form-check-label" for="removeOutliers">
+                                        移除异常值
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="normalizeData">
+                                    <label class="form-check-label" for="normalizeData">
+                                        数据标准化
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Data Split -->
+                        <h6 class="mb-3 mt-4">数据分割</h6>
+                        <div class="row">
+                            <div class="col-md-4 mb-3">
+                                <label for="trainRatio" class="form-label">训练集比例</label>
+                                <input type="number" class="form-control" id="trainRatio" value="0.7" min="0.1" max="0.9" step="0.1">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="valRatio" class="form-label">验证集比例</label>
+                                <input type="number" class="form-control" id="valRatio" value="0.2" min="0.1" max="0.9" step="0.1">
+                            </div>
+                            <div class="col-md-4 mb-3">
+                                <label for="testRatio" class="form-label">测试集比例</label>
+                                <input type="number" class="form-control" id="testRatio" value="0.1" min="0.1" max="0.9" step="0.1" readonly>
+                            </div>
+                        </div>
+
+                        <!-- Feature Extraction -->
+                        <h6 class="mb-3 mt-4">特征提取</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="extractCFG" checked>
+                                    <label class="form-check-label" for="extractCFG">
+                                        控制流图特征
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="extractDFG" checked>
+                                    <label class="form-check-label" for="extractDFG">
+                                        数据流图特征
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="extractAST">
+                                    <label class="form-check-label" for="extractAST">
+                                        抽象语法树特征
+                                    </label>
+                                </div>
+                                <div class="form-check mb-2">
+                                    <input class="form-check-input" type="checkbox" id="extractSemantic">
+                                    <label class="form-check-label" for="extractSemantic">
+                                        语义特征
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="startPreprocessing">
+                        <i class="fas fa-play"></i> 开始预处理
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/datasets.js"></script>
+    <script src="js/data.js"></script>
+</body>
+</html>
