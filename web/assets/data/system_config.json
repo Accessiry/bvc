@@ -1,0 +1,62 @@
+{
+  "models": [
+    {
+      "name": "VulSeeker",
+      "description": "Graph Neural Network based vulnerability detection",
+      "type": "GNN",
+      "embedding": ["BERT", "Word2Vec"],
+      "architectures": ["ARM", "MIPS", "x86"],
+      "features": ["Control Flow Graph", "Data Flow Graph", "Function Features"]
+    },
+    {
+      "name": "SENSE",
+      "description": "Deep learning based binary similarity detection",
+      "type": "Deep Learning",
+      "embedding": ["BERT", "Word2Vec"],
+      "architectures": ["ARM", "MIPS", "x86"],
+      "features": ["Assembly Instructions", "Function Signatures", "Call Graph"]
+    },
+    {
+      "name": "FIT",
+      "description": "Function similarity detection across architectures",
+      "type": "Siamese Network",
+      "embedding": ["BERT", "Word2Vec"],
+      "architectures": ["ARM", "MIPS", "x86"],
+      "features": ["Function Embeddings", "Cross-Architecture Mapping"]
+    },
+    {
+      "name": "SAFE",
+      "description": "Self-attention based function embedding",
+      "type": "Transformer",
+      "embedding": ["BERT", "Word2Vec"],
+      "architectures": ["ARM", "MIPS", "x86"],
+      "features": ["Self-Attention Mechanism", "Assembly Analysis"]
+    }
+  ],
+  "programs": [
+    "coreutils",
+    "openssl", 
+    "busybox",
+    "libsqlite3",
+    "libgmp"
+  ],
+  "architectures": [
+    "arm",
+    "mips", 
+    "x86",
+    "arm-mips",
+    "arm-x86",
+    "mips-x86",
+    "arm-mips-x86"
+  ],
+  "optimizations": [
+    "O0",
+    "O1",
+    "O2", 
+    "O3",
+    "O0-O1",
+    "O1-O2",
+    "O2-O3",
+    "O0-O1-O2-O3"
+  ]
+}

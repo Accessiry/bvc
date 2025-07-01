@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model Comparison - 模型对比 | BVC System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="../css/style.css" rel="stylesheet">
+    <link href="../css/charts.css" rel="stylesheet">
+</head>
+<body data-bs-theme="dark">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="../index.html">
+                <i class="fas fa-shield-alt me-2"></i>
+                <span data-en="BVC System" data-zh="漏洞检测系统">漏洞检测系统</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="../index.html" data-en="Overview" data-zh="概览">概览</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" href="models.html" data-en="Models" data-zh="模型对比">模型对比</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="results.html" data-en="Results" data-zh="检测结果">检测结果</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="analysis.html" data-en="Analysis" data-zh="分析工具">分析工具</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="dashboard.html" data-en="Dashboard" data-zh="仪表板">仪表板</a>
+                    </li>
+                </ul>
+                
+                <div class="navbar-nav">
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-globe me-1"></i>
+                            <span data-en="Language" data-zh="语言">语言</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="setLanguage('zh')">中文</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="setLanguage('en')">English</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container-fluid mt-5 pt-4">
+        <!-- Page Header -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="section-title" data-en="Model Performance Comparison" data-zh="模型性能对比">模型性能对比</h1>
+                        <p class="lead" data-en="Compare and analyze the performance of different vulnerability detection models" 
+                           data-zh="比较和分析不同漏洞检测模型的性能">
+                            比较和分析不同漏洞检测模型的性能
+                        </p>
+                    </div>
+                    <div>
+                        <button class="btn btn-outline-primary" id="exportBtn">
+                            <i class="fas fa-download me-2"></i>
+                            <span data-en="Export Data" data-zh="导出数据">导出数据</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model Selection Controls -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0" data-en="Filter Options" data-zh="筛选选项">筛选选项</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-3">
+                                <label class="form-label" data-en="Models" data-zh="模型">模型</label>
+                                <div class="model-checkboxes">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="vulseeker" value="vulseeker" checked>
+                                        <label class="form-check-label" for="vulseeker">VulSeeker</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="sense" value="sense" checked>
+                                        <label class="form-check-label" for="sense">SENSE</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="fit" value="fit" checked>
+                                        <label class="form-check-label" for="fit">FIT</label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="safe" value="safe" checked>
+                                        <label class="form-check-label" for="safe">SAFE</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label" data-en="Architecture" data-zh="架构">架构</label>
+                                <select class="form-select" id="architectureFilter">
+                                    <option value="" data-en="All Architectures" data-zh="所有架构">所有架构</option>
+                                    <option value="arm">ARM</option>
+                                    <option value="mips">MIPS</option>
+                                    <option value="x86">x86</option>
+                                    <option value="arm-mips">ARM-MIPS</option>
+                                    <option value="arm-x86">ARM-x86</option>
+                                    <option value="mips-x86">MIPS-x86</option>
+                                    <option value="arm-mips-x86">ARM-MIPS-x86</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label" data-en="Optimization" data-zh="优化级别">优化级别</label>
+                                <select class="form-select" id="optimizationFilter">
+                                    <option value="" data-en="All Levels" data-zh="所有级别">所有级别</option>
+                                    <option value="O0">O0</option>
+                                    <option value="O1">O1</option>
+                                    <option value="O2">O2</option>
+                                    <option value="O3">O3</option>
+                                    <option value="O0-O1">O0-O1</option>
+                                    <option value="O1-O2">O1-O2</option>
+                                    <option value="O2-O3">O2-O3</option>
+                                    <option value="O0-O1-O2-O3">O0-O1-O2-O3</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label" data-en="Embedding" data-zh="嵌入技术">嵌入技术</label>
+                                <select class="form-select" id="embeddingFilter">
+                                    <option value="" data-en="All Types" data-zh="所有类型">所有类型</option>
+                                    <option value="bert">BERT</option>
+                                    <option value="word2vec">Word2Vec</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <button class="btn btn-primary" id="applyFilters">
+                                    <i class="fas fa-filter me-2"></i>
+                                    <span data-en="Apply Filters" data-zh="应用筛选">应用筛选</span>
+                                </button>
+                                <button class="btn btn-outline-secondary ms-2" id="resetFilters">
+                                    <i class="fas fa-undo me-2"></i>
+                                    <span data-en="Reset" data-zh="重置">重置</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Performance Metrics Overview -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h3 class="mb-3" data-en="Performance Metrics" data-zh="性能指标">性能指标</h3>
+                <div class="metrics-grid" id="metricsGrid">
+                    <!-- Dynamic content will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="row mb-4">
+            <!-- ROC Curves Comparison -->
+            <div class="col-lg-6 mb-4">
+                <div class="card chart-card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0" data-en="ROC Curves Comparison" data-zh="ROC曲线对比">ROC曲线对比</h5>
+                        <button class="btn btn-sm btn-outline-primary export-btn" data-chart="rocChart" data-filename="roc_curves">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-wrapper">
+                            <canvas id="rocChart"></canvas>
+                        </div>
+                        <div class="roc-stats" id="rocStats">
+                            <!-- AUC values will be displayed here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Radar Chart -->
+            <div class="col-lg-6 mb-4">
+                <div class="card chart-card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0" data-en="Performance Radar" data-zh="性能雷达图">性能雷达图</h5>
+                        <button class="btn btn-sm btn-outline-primary export-btn" data-chart="radarChart" data-filename="performance_radar">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="chart-wrapper">
+                            <canvas id="radarChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Detailed Metrics Table -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0" data-en="Detailed Performance Metrics" data-zh="详细性能指标">详细性能指标</h5>
+                        <div>
+                            <button class="btn btn-sm btn-outline-primary" id="exportTableBtn">
+                                <i class="fas fa-table me-1"></i>
+                                <span data-en="Export CSV" data-zh="导出CSV">导出CSV</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-hover" id="metricsTable">
+                                <thead>
+                                    <tr>
+                                        <th data-en="Model" data-zh="模型">模型</th>
+                                        <th data-en="Architecture" data-zh="架构">架构</th>
+                                        <th data-en="Optimization" data-zh="优化级别">优化级别</th>
+                                        <th data-en="Precision" data-zh="精确率">精确率</th>
+                                        <th data-en="Recall" data-zh="召回率">召回率</th>
+                                        <th data-en="F1-Score" data-zh="F1分数">F1分数</th>
+                                        <th data-en="Accuracy" data-zh="准确率">准确率</th>
+                                        <th data-en="AUC" data-zh="AUC">AUC</th>
+                                        <th data-en="Updated" data-zh="更新时间">更新时间</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="metricsTableBody">
+                                    <!-- Dynamic content will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Model Architecture Details -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h3 class="mb-3" data-en="Model Architecture Details" data-zh="模型架构详情">模型架构详情</h3>
+                <div class="row">
+                    <div class="col-md-6 col-xl-3 mb-3">
+                        <div class="card info-card">
+                            <div class="card-header">
+                                <h6 class="mb-0">VulSeeker</h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled mb-0">
+                                    <li><i class="fas fa-check text-success me-2"></i><span data-en="Graph Neural Network" data-zh="图神经网络">图神经网络</span></li>
+                                    <li><i class="fas fa-check text-success me-2"></i><span data-en="Control Flow Analysis" data-zh="控制流分析">控制流分析</span></li>
+                                    <li><i class="fas fa-check text-success me-2"></i><span data-en="BERT Embedding" data-zh="BERT嵌入">BERT嵌入</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3 mb-3">
+                        <div class="card info-card">
+                            <div class="card-header">
+                                <h6 class="mb-0">SENSE</h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled mb-0">
+                                    <li><i class="fas fa-check text-success me-2"></i><span data-en="Deep Learning" data-zh="深度学习">深度学习</span></li>
+                                    <li><i class="fas fa-check text-success me-2"></i><span data-en="Feature Extraction" data-zh="特征提取">特征提取</span></li>
+                                    <li><i class="fas fa-check text-success me-2"></i><span data-en="Pattern Recognition" data-zh="模式识别">模式识别</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3 mb-3">
+                        <div class="card info-card">
+                            <div class="card-header">
+                                <h6 class="mb-0">FIT</h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled mb-0">
+                                    <li><i class="fas fa-check text-success me-2"></i><span data-en="Function Similarity" data-zh="函数相似性">函数相似性</span></li>
+                                    <li><i class="fas fa-check text-success me-2"></i><span data-en="Cross-Architecture" data-zh="跨架构">跨架构</span></li>
+                                    <li><i class="fas fa-check text-success me-2"></i><span data-en="Siamese Network" data-zh="孪生网络">孪生网络</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-xl-3 mb-3">
+                        <div class="card info-card">
+                            <div class="card-header">
+                                <h6 class="mb-0">SAFE</h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled mb-0">
+                                    <li><i class="fas fa-check text-success me-2"></i><span data-en="Self-Attention" data-zh="自注意力机制">自注意力机制</span></li>
+                                    <li><i class="fas fa-check text-success me-2"></i><span data-en="Assembly Analysis" data-zh="汇编分析">汇编分析</span></li>
+                                    <li><i class="fas fa-check text-success me-2"></i><span data-en="Transformer Model" data-zh="Transformer模型">Transformer模型</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2024 Binary Vulnerability Detection System. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p data-en="Advanced Model Comparison & Analysis" data-zh="高级模型对比与分析">
+                        高级模型对比与分析
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="../js/utils.js"></script>
+    <script src="../js/api.js"></script>
+    <script src="../js/charts.js"></script>
+    <script src="../js/main.js"></script>
+    
+    <script>
+        // Models page specific functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeModelsPage();
+        });
+        
+        async function initializeModelsPage() {
+            try {
+                await loadModelData();
+                setupModelFilters();
+                setupExportHandlers();
+            } catch (error) {
+                console.error('Failed to initialize models page:', error);
+            }
+        }
+        
+        async function loadModelData() {
+            // Load mock data for development
+            const models = ['vulseeker', 'sense', 'fit', 'safe'];
+            const architectures = ['arm', 'mips', 'x86', 'arm-mips'];
+            const optimizations = ['O0', 'O1', 'O2', 'O3'];
+            
+            const data = [];
+            for (const model of models) {
+                for (const arch of architectures) {
+                    for (const opt of optimizations) {
+                        data.push({
+                            model,
+                            architecture: arch,
+                            optimization: opt,
+                            precision: 0.85 + Math.random() * 0.1,
+                            recall: 0.82 + Math.random() * 0.12,
+                            f1Score: 0.84 + Math.random() * 0.1,
+                            accuracy: 0.87 + Math.random() * 0.08,
+                            auc: 0.90 + Math.random() * 0.06,
+                            updated: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000)
+                        });
+                    }
+                }
+            }
+            
+            updateMetricsGrid(data);
+            updateMetricsTable(data);
+            updateCharts(data);
+        }
+        
+        function updateMetricsGrid(data) {
+            const grid = document.getElementById('metricsGrid');
+            const models = ['vulseeker', 'sense', 'fit', 'safe'];
+            
+            grid.innerHTML = models.map(model => {
+                const modelData = data.filter(d => d.model === model);
+                const avgMetrics = calculateAverageMetrics(modelData);
+                
+                return `
+                    <div class="metric-card">
+                        <div class="metric-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="metric-value">${Utils.formatPercentage(avgMetrics.accuracy)}</div>
+                        <div class="metric-label">${model.toUpperCase()}</div>
+                        <div class="metric-change positive">
+                            <i class="fas fa-arrow-up"></i>
+                            ${Utils.formatPercentage(0.02 + Math.random() * 0.03)}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+        
+        function updateMetricsTable(data) {
+            const tbody = document.getElementById('metricsTableBody');
+            tbody.innerHTML = data.map(item => `
+                <tr>
+                    <td><span class="badge" style="background-color: ${Utils.getColorForModel(item.model)}">${item.model.toUpperCase()}</span></td>
+                    <td>${item.architecture}</td>
+                    <td>${item.optimization}</td>
+                    <td>${Utils.formatPercentage(item.precision)}</td>
+                    <td>${Utils.formatPercentage(item.recall)}</td>
+                    <td>${Utils.formatPercentage(item.f1Score)}</td>
+                    <td>${Utils.formatPercentage(item.accuracy)}</td>
+                    <td>${Utils.formatPercentage(item.auc)}</td>
+                    <td>${Utils.getRelativeTime(item.updated)}</td>
+                </tr>
+            `).join('');
+        }
+        
+        function updateCharts(data) {
+            // ROC Chart
+            const rocData = {
+                models: ['vulseeker', 'sense', 'fit', 'safe'].map(model => ({
+                    name: model,
+                    points: generateMockROCData()
+                }))
+            };
+            Charts.createROCChart('rocChart', rocData);
+            
+            // Radar Chart
+            const radarData = {
+                labels: ['Precision', 'Recall', 'F1-Score', 'Accuracy', 'AUC'],
+                datasets: ['vulseeker', 'sense', 'fit', 'safe'].map(model => {
+                    const modelData = data.filter(d => d.model === model);
+                    const avgMetrics = calculateAverageMetrics(modelData);
+                    return {
+                        label: model,
+                        data: [avgMetrics.precision, avgMetrics.recall, avgMetrics.f1Score, avgMetrics.accuracy, avgMetrics.auc]
+                    };
+                })
+            };
+            Charts.createPerformanceChart('radarChart', radarData);
+        }
+        
+        function calculateAverageMetrics(data) {
+            const metrics = ['precision', 'recall', 'f1Score', 'accuracy', 'auc'];
+            const result = {};
+            
+            metrics.forEach(metric => {
+                result[metric] = data.reduce((sum, item) => sum + item[metric], 0) / data.length;
+            });
+            
+            return result;
+        }
+        
+        function generateMockROCData() {
+            const points = [];
+            for (let i = 0; i <= 100; i++) {
+                const fpr = i / 100;
+                const tpr = Math.min(1, fpr + 0.1 + Math.random() * 0.3);
+                points.push({ x: fpr, y: tpr });
+            }
+            return points.sort((a, b) => a.x - b.x);
+        }
+        
+        function setupModelFilters() {
+            const applyBtn = document.getElementById('applyFilters');
+            const resetBtn = document.getElementById('resetFilters');
+            
+            applyBtn.addEventListener('click', applyFilters);
+            resetBtn.addEventListener('click', resetFilters);
+        }
+        
+        function applyFilters() {
+            // Implementation for applying filters
+            console.log('Applying filters...');
+            loadModelData(); // Reload with filters
+        }
+        
+        function resetFilters() {
+            // Reset all filter controls
+            document.getElementById('architectureFilter').value = '';
+            document.getElementById('optimizationFilter').value = '';
+            document.getElementById('embeddingFilter').value = '';
+            
+            // Uncheck and recheck all model checkboxes
+            document.querySelectorAll('.model-checkboxes input[type="checkbox"]').forEach(cb => {
+                cb.checked = true;
+            });
+            
+            loadModelData();
+        }
+        
+        function setupExportHandlers() {
+            document.getElementById('exportBtn').addEventListener('click', function() {
+                // Export all model data
+                console.log('Exporting model data...');
+            });
+            
+            document.getElementById('exportTableBtn').addEventListener('click', function() {
+                // Export table as CSV
+                console.log('Exporting table as CSV...');
+            });
+        }
+    </script>
+</body>
+</html>

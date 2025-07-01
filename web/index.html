@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Binary Vulnerability Detection System - 二进制漏洞检测系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+    <link href="css/charts.css" rel="stylesheet">
+</head>
+<body data-bs-theme="dark">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#" id="nav-brand">
+                <i class="fas fa-shield-alt me-2"></i>
+                <span data-en="BVC System" data-zh="漏洞检测系统">漏洞检测系统</span>
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#overview" data-en="Overview" data-zh="概览">概览</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/models.html" data-en="Models" data-zh="模型对比">模型对比</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/results.html" data-en="Results" data-zh="检测结果">检测结果</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/analysis.html" data-en="Analysis" data-zh="分析工具">分析工具</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="pages/dashboard.html" data-en="Dashboard" data-zh="仪表板">仪表板</a>
+                    </li>
+                </ul>
+                
+                <div class="navbar-nav">
+                    <div class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-globe me-1"></i>
+                            <span data-en="Language" data-zh="语言">语言</span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="#" onclick="setLanguage('zh')">中文</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="setLanguage('en')">English</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container-fluid mt-5 pt-4">
+        <!-- Hero Section -->
+        <section id="hero" class="row mb-5">
+            <div class="col-12 text-center">
+                <div class="hero-content">
+                    <h1 class="display-4 mb-3" data-en="Binary Vulnerability Detection System" data-zh="二进制代码漏洞检测系统">
+                        二进制代码漏洞检测系统
+                    </h1>
+                    <p class="lead mb-4" data-en="Advanced ML-based vulnerability detection with multiple models and embedding techniques" 
+                       data-zh="基于机器学习的高级漏洞检测系统，支持多种模型和嵌入技术">
+                        基于机器学习的高级漏洞检测系统，支持多种模型和嵌入技术
+                    </p>
+                    <div class="hero-stats row">
+                        <div class="col-md-3 col-6">
+                            <div class="stat-card">
+                                <i class="fas fa-brain text-primary"></i>
+                                <h3 id="model-count">4</h3>
+                                <p data-en="Detection Models" data-zh="检测模型">检测模型</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="stat-card">
+                                <i class="fas fa-microchip text-success"></i>
+                                <h3 id="arch-count">3</h3>
+                                <p data-en="Architectures" data-zh="支持架构">支持架构</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="stat-card">
+                                <i class="fas fa-bug text-warning"></i>
+                                <h3 id="detection-count">10k+</h3>
+                                <p data-en="Detections" data-zh="检测数量">检测数量</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="stat-card">
+                                <i class="fas fa-chart-line text-info"></i>
+                                <h3 id="accuracy-rate">95.8%</h3>
+                                <p data-en="Accuracy" data-zh="准确率">准确率</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Overview Section -->
+        <section id="overview" class="row mb-5">
+            <div class="col-12">
+                <h2 class="section-title" data-en="System Overview" data-zh="系统概览">系统概览</h2>
+                
+                <div class="row">
+                    <!-- Project Introduction -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="card info-card">
+                            <div class="card-header">
+                                <h5 class="mb-0" data-en="Project Introduction" data-zh="项目介绍">项目介绍</h5>
+                            </div>
+                            <div class="card-body">
+                                <p data-en="This project implements a comprehensive binary code vulnerability detection system using machine learning techniques. It supports multiple detection models and embedding approaches for accurate vulnerability identification across different architectures and optimization levels." 
+                                   data-zh="该项目实现了一个基于机器学习技术的综合性二进制代码漏洞检测系统。支持多种检测模型和嵌入方法，能够在不同架构和优化级别下准确识别漏洞。">
+                                    该项目实现了一个基于机器学习技术的综合性二进制代码漏洞检测系统。支持多种检测模型和嵌入方法，能够在不同架构和优化级别下准确识别漏洞。
+                                </p>
+                                
+                                <h6 class="mt-3" data-en="Supported Models:" data-zh="支持的模型：">支持的模型：</h6>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i>VulSeeker</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>SENSE</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>FIT</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>SAFE</li>
+                                </ul>
+                                
+                                <h6 class="mt-3" data-en="Embedding Techniques:" data-zh="嵌入技术：">嵌入技术：</h6>
+                                <ul class="list-unstyled">
+                                    <li><i class="fas fa-check text-success me-2"></i>BERT</li>
+                                    <li><i class="fas fa-check text-success me-2"></i>Word2Vec</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Architecture Overview -->
+                    <div class="col-lg-6 mb-4">
+                        <div class="card info-card">
+                            <div class="card-header">
+                                <h5 class="mb-0" data-en="System Architecture" data-zh="系统架构">系统架构</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="architecture-diagram">
+                                    <div class="arch-layer">
+                                        <div class="arch-box">
+                                            <i class="fas fa-upload"></i>
+                                            <span data-en="Binary Input" data-zh="二进制输入">二进制输入</span>
+                                        </div>
+                                    </div>
+                                    <div class="arch-arrow">↓</div>
+                                    <div class="arch-layer">
+                                        <div class="arch-box">
+                                            <i class="fas fa-cogs"></i>
+                                            <span data-en="Feature Extraction" data-zh="特征提取">特征提取</span>
+                                        </div>
+                                    </div>
+                                    <div class="arch-arrow">↓</div>
+                                    <div class="arch-layer">
+                                        <div class="arch-box">
+                                            <i class="fas fa-brain"></i>
+                                            <span data-en="ML Models" data-zh="机器学习模型">机器学习模型</span>
+                                        </div>
+                                    </div>
+                                    <div class="arch-arrow">↓</div>
+                                    <div class="arch-layer">
+                                        <div class="arch-box">
+                                            <i class="fas fa-shield-alt"></i>
+                                            <span data-en="Vulnerability Report" data-zh="漏洞报告">漏洞报告</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Real-time Statistics -->
+        <section id="statistics" class="row mb-5">
+            <div class="col-12">
+                <h2 class="section-title" data-en="Real-time Statistics" data-zh="实时统计">实时统计</h2>
+                
+                <div class="row">
+                    <div class="col-lg-8 mb-4">
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <h5 class="mb-0" data-en="Model Performance Comparison" data-zh="模型性能对比">模型性能对比</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="performanceChart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 mb-4">
+                        <div class="card chart-card">
+                            <div class="card-header">
+                                <h5 class="mb-0" data-en="Architecture Distribution" data-zh="架构分布">架构分布</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="archChart" width="300" height="200"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quick Actions -->
+        <section id="quick-actions" class="row mb-5">
+            <div class="col-12">
+                <h2 class="section-title" data-en="Quick Actions" data-zh="快速操作">快速操作</h2>
+                
+                <div class="row">
+                    <div class="col-md-3 col-6 mb-3">
+                        <a href="pages/analysis.html" class="action-card">
+                            <i class="fas fa-upload"></i>
+                            <h5 data-en="Upload Binary" data-zh="上传二进制文件">上传二进制文件</h5>
+                            <p data-en="Detect vulnerabilities in your binary" data-zh="检测您的二进制文件中的漏洞">检测您的二进制文件中的漏洞</p>
+                        </a>
+                    </div>
+                    
+                    <div class="col-md-3 col-6 mb-3">
+                        <a href="pages/models.html" class="action-card">
+                            <i class="fas fa-chart-bar"></i>
+                            <h5 data-en="Compare Models" data-zh="模型对比">模型对比</h5>
+                            <p data-en="View detailed model performance" data-zh="查看详细的模型性能">查看详细的模型性能</p>
+                        </a>
+                    </div>
+                    
+                    <div class="col-md-3 col-6 mb-3">
+                        <a href="pages/results.html" class="action-card">
+                            <i class="fas fa-search"></i>
+                            <h5 data-en="Browse Results" data-zh="浏览结果">浏览结果</h5>
+                            <p data-en="Explore detection results" data-zh="探索检测结果">探索检测结果</p>
+                        </a>
+                    </div>
+                    
+                    <div class="col-md-3 col-6 mb-3">
+                        <a href="pages/dashboard.html" class="action-card">
+                            <i class="fas fa-tachometer-alt"></i>
+                            <h5 data-en="Dashboard" data-zh="仪表板">仪表板</h5>
+                            <p data-en="Monitor system status" data-zh="监控系统状态">监控系统状态</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <p>&copy; 2024 Binary Vulnerability Detection System. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-end">
+                    <p data-en="Powered by Machine Learning & Deep Learning" data-zh="由机器学习和深度学习技术驱动">
+                        由机器学习和深度学习技术驱动
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/utils.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/charts.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
