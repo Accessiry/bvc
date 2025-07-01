@@ -1,7 +1,7 @@
 // Real-time communication and data updates
 class RealTimeManager {
     constructor() {
-        this.wsConnection = null;
+        this.socket = null;
         this.pollingInterval = null;
         this.isConnected = false;
         this.reconnectAttempts = 0;
@@ -15,36 +15,74 @@ class RealTimeManager {
     }
 
     initializeConnection() {
-        this.connectWebSocket();
+        this.connectSocketIO();
     }
 
-    connectWebSocket() {
-        const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-        const wsUrl = `${protocol}//${window.location.host}/ws/training`;
-        
+    connectSocketIO() {
         try {
-            this.wsConnection = new WebSocket(wsUrl);
+            // Check if socket.io is available
+            if (typeof io === 'undefined') {
+                console.error('Socket.IO client library not found, falling back to polling');
+                this.fallbackToPolling();
+                return;
+            }
+
+            // Create socket.io connection
+            this.socket = io({
+                transports: ['websocket', 'polling'],
+                reconnection: true,
+                reconnectionAttempts: this.maxReconnectAttempts,
+                reconnectionDelay: this.reconnectDelay
+            });
             
-            this.wsConnection.onopen = () => {
+            this.socket.on('connect', () => {
                 this.onConnectionOpen();
-            };
+            });
             
-            this.wsConnection.onmessage = (event) => {
-                this.handleMessage(event.data);
-            };
+            this.socket.on('disconnect', (reason) => {
+                this.onConnectionClose({ reason });
+            });
             
-            this.wsConnection.onclose = (event) => {
-                this.onConnectionClose(event);
-            };
-            
-            this.wsConnection.onerror = (error) => {
+            this.socket.on('connect_error', (error) => {
                 this.onConnectionError(error);
-            };
+            });
+
+            // Set up training-specific event listeners
+            this.setupTrainingEvents();
             
         } catch (error) {
-            console.error('WebSocket creation failed:', error);
+            console.error('Socket.IO connection failed:', error);
             this.fallbackToPolling();
         }
+    }
+
+    setupTrainingEvents() {
+        if (!this.socket) return;
+
+        // Listen for training events from the server
+        this.socket.on('training_progress', (data) => {
+            this.emit('training_progress', data);
+        });
+
+        this.socket.on('training_metrics', (data) => {
+            this.emit('training_metrics', data);
+        });
+
+        this.socket.on('training_log', (data) => {
+            this.emit('training_log', data);
+        });
+
+        this.socket.on('training_complete', (data) => {
+            this.emit('training_complete', data);
+        });
+
+        this.socket.on('training_error', (data) => {
+            this.emit('training_error', data);
+        });
+
+        this.socket.on('connected', (data) => {
+            console.log('Server connection confirmed:', data);
+        });
     }
 
     onConnectionOpen() {
@@ -97,7 +135,7 @@ class RealTimeManager {
         console.log(`Attempting to reconnect (${this.reconnectAttempts}/${this.maxReconnectAttempts})...`);
         
         setTimeout(() => {
-            this.connectWebSocket();
+            this.connectSocketIO();
         }, this.reconnectDelay);
         
         // Exponential backoff
@@ -154,22 +192,24 @@ class RealTimeManager {
 
     handleMessage(data) {
         try {
-            const message = JSON.parse(data);
+            // For socket.io, data is already parsed as an object
+            const message = typeof data === 'string' ? JSON.parse(data) : data;
             this.emit('message', message);
             
             // Emit specific event based on message type
             if (message.type) {
-                this.emit(message.type, message.payload);
+                this.emit(message.type, message.payload || message);
             }
             
         } catch (error) {
-            console.error('Failed to parse WebSocket message:', error);
+            console.error('Failed to parse message:', error);
         }
     }
 
     sendMessage(message) {
-        if (this.isConnected && this.wsConnection.readyState === WebSocket.OPEN) {
-            this.wsConnection.send(JSON.stringify(message));
+        if (this.isConnected && this.socket && this.socket.connected) {
+            // Use socket.io emit instead of WebSocket send
+            this.socket.emit('message', message);
         } else {
             // Queue message for later sending
             this.messageQueue.push(message);
@@ -250,38 +290,58 @@ class RealTimeManager {
 
     // Training-specific methods
     startTrainingMonitoring(taskId) {
-        this.sendMessage({
-            type: 'subscribe_training',
-            task_id: taskId
-        });
+        if (this.socket && this.socket.connected) {
+            this.socket.emit('subscribe_training', { task_id: taskId });
+        } else {
+            this.sendMessage({
+                type: 'subscribe_training',
+                task_id: taskId
+            });
+        }
     }
 
     stopTrainingMonitoring(taskId) {
-        this.sendMessage({
-            type: 'unsubscribe_training',
-            task_id: taskId
-        });
+        if (this.socket && this.socket.connected) {
+            this.socket.emit('unsubscribe_training', { task_id: taskId });
+        } else {
+            this.sendMessage({
+                type: 'unsubscribe_training',
+                task_id: taskId
+            });
+        }
     }
 
     pauseTraining(taskId) {
-        this.sendMessage({
-            type: 'pause_training',
-            task_id: taskId
-        });
+        if (this.socket && this.socket.connected) {
+            this.socket.emit('pause_training', { task_id: taskId });
+        } else {
+            this.sendMessage({
+                type: 'pause_training',
+                task_id: taskId
+            });
+        }
     }
 
     resumeTraining(taskId) {
-        this.sendMessage({
-            type: 'resume_training',
-            task_id: taskId
-        });
+        if (this.socket && this.socket.connected) {
+            this.socket.emit('resume_training', { task_id: taskId });
+        } else {
+            this.sendMessage({
+                type: 'resume_training',
+                task_id: taskId
+            });
+        }
     }
 
     stopTraining(taskId) {
-        this.sendMessage({
-            type: 'stop_training',
-            task_id: taskId
-        });
+        if (this.socket && this.socket.connected) {
+            this.socket.emit('stop_training', { task_id: taskId });
+        } else {
+            this.sendMessage({
+                type: 'stop_training',
+                task_id: taskId
+            });
+        }
     }
 
     // Cleanup
@@ -291,9 +351,9 @@ class RealTimeManager {
             this.pollingInterval = null;
         }
         
-        if (this.wsConnection) {
-            this.wsConnection.close(1000, 'Client disconnect');
-            this.wsConnection = null;
+        if (this.socket) {
+            this.socket.disconnect();
+            this.socket = null;
         }
         
         this.isConnected = false;
@@ -304,8 +364,8 @@ class RealTimeManager {
     // Heartbeat mechanism
     startHeartbeat() {
         this.heartbeatInterval = setInterval(() => {
-            if (this.isConnected) {
-                this.sendMessage({ type: 'ping' });
+            if (this.isConnected && this.socket && this.socket.connected) {
+                this.socket.emit('ping');
             }
         }, 30000); // Ping every 30 seconds
     }
