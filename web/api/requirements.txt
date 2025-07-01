@@ -1,11 +1,12 @@
-# Requirements file for the BVC backend system
-Flask==2.3.3
+# Requirements file for the BVC backend system - Python 3.12 compatible versions
+Flask==3.0.0
 Flask-CORS==4.0.0
 Flask-SocketIO==5.3.6
 SQLAlchemy==2.0.23
-pandas==2.0.3
-numpy==1.24.3
-Werkzeug==2.3.7
-python-socketio==5.9.0
-python-engineio==4.7.1
-eventlet==0.33.3
+pandas==2.1.4
+numpy==1.26.2
+Werkzeug==3.0.1
+python-socketio==5.10.0
+python-engineio==4.8.0
+# Note: eventlet removed due to Python 3.12 compatibility issues with ssl.wrap_socket
+# Using threading async mode instead
